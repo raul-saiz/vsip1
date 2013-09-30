@@ -18,24 +18,24 @@ int main(int argc, char *argv[]) {
 
   GLenum  type;
 
- // iniValors();
+  iniValors();
   llegirEuropaPerfil("./data/euro_perfil.dat");
   llegirEuropaParalel("./data/euro_paral_lels.dat");
   llegirEuropaMeridia("./data/euro_meridians.dat");
   llegirEuropaPuntets("./data/euro_puntets.dat");
 
-  //glutInit(&argc, argv);
-  //doubleBuffer=GL_FALSE;
+  glutInit(&argc, argv);
+  doubleBuffer=GL_FALSE;
   type = GLUT_RGB;
   type |= (doubleBuffer) ? GLUT_DOUBLE : GLUT_SINGLE;
- // glutInitDisplayMode(type);
- // glutInitWindowSize(FimaX,FimaY);
-//  glutCreateWindow("Model de voxels");
+  glutInitDisplayMode(type);
+  glutInitWindowSize(FimaX,FimaY);
+  glutCreateWindow("VSI Prac 1");
   Init();
-  //glutKeyboardFunc( Tecles);
- // glutDisplayFunc( Pintar);
- // glutReshapeFunc(CanviFinestra);
+  glutKeyboardFunc( Tecles);
+  glutDisplayFunc( PintarCartografia );
+  glutReshapeFunc(CanviTamany);
 
- // glutMainLoop();
+  glutMainLoop();
   return 0;
 }
