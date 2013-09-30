@@ -15,10 +15,19 @@ typedef unsigned char MonVoxels[DIM][DIM][64];
 extern MonVoxels MonActual;
 extern GLenum  doubleBuffer, mode;
 extern int     PLA;
-struct punto{
+typedef struct punto{
 	int x;
 	int y;
-};
+}bubu;
+typedef struct puntoflo{
+	float x;
+	float y;
+}bubu2;
+
+struct puntoflo perfil [520][620];
+struct puntoflo paralel [20][420];
+struct puntoflo meridian [20][420];
+struct puntoflo puntets [4420][2];
 
 int  FimaX;
 int FimaY;
