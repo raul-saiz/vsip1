@@ -4,17 +4,41 @@
  *  Created on: 30/09/2013
  *      Author: lulz
  */
+
+
 #include <stdio.h>
 #include <math.h>
 #include "GL/glut.h"
-#include "inicio.h"
 #include "cartografia.h"
 
 int maxperfils=0,maxparalels=0,maxmeridians=0,maxpuntets=0;
 
+int meri,carto,para;
+
+GLenum  doubleBuffer, mode;
+
+int FimaX=812;
+int FimaY=812;
+
+int MinX, MinY, MinZ, ResX, ResY, ResZ;
+float IncX, IncY, IncZ;
+
+
+
+void iniValors() {
+
+  MinX=ORIG;  MinY=ORIG;  MinZ=ORIG;
+  IncX=INC;  IncY=INC;  IncZ=INC;
+  ResX=DIM;  ResY=DIM;  ResZ=DIM;
+
+
+}
+
+
 void Init() {
   glClearColor(0.0, 0.0, 0.0, 0.0);
   mode = GL_FALSE;
+  meri=carto=para=1;
 }
 
 void CanviTamany(int width, int height) {
@@ -55,7 +79,7 @@ void llegirEuropaPerfil(char* nomFitxer) {
 		k++;
 	}
 	fclose(f);
-//	fprintf(stdout,"Leidos %d perfiles\n",k);
+	//fprintf(stdout,"Leidos %d perfiles\n",k);
 	maxperfils=k;
 }
 
@@ -86,7 +110,7 @@ void llegirEuropaParalel(char* nomFitxer) {
 		k++;
 	}
 	fclose(f);
-//	fprintf(stdout,"Leidos %d paralelos\n",k);
+	//fprintf(stdout,"Leidos %d paralelos\n",k);
 	maxparalels=k;
 }
 
@@ -115,7 +139,7 @@ void llegirEuropaMeridia(char* nomFitxer) {
 		k++;
 	}
 	fclose(f);
-//	fprintf(stdout,"Leidos %d meridianos \n",k);
+	//fprintf(stdout,"Leidos %d meridianos \n",k);
 	maxmeridians=k;
 }
 
@@ -145,12 +169,12 @@ void llegirEuropaPuntets (char* nomFitxer) {
 		k++;
 	}
 	fclose(f);
-//	fprintf(stdout,"Leidos %d puntets",k);
+	//fprintf(stdout,"Leidos %d puntets",k);
 	maxpuntets=k;
 }
 
 
-void pintarEuropaPuntets (int multiplicador) {
+void pintarEuropaPuntets (float multiplicador) {
 	int i=0;
 	for ( i=0;i<maxpuntets;i++){
 		glBegin(GL_LINE_STRIP);
@@ -161,7 +185,7 @@ void pintarEuropaPuntets (int multiplicador) {
 	}
 	glFlush();
 }
-void pintarEuropaMeridia(int multiplicador){
+void pintarEuropaMeridia(float multiplicador){
 
 	int i=0,j=0;
 	for ( i=0;i<maxmeridians;i++){
@@ -175,8 +199,8 @@ void pintarEuropaMeridia(int multiplicador){
 	}
 	glFlush();
 }
-void pintarEuropaParalel(int multiplicador){
-	//,maxparalels,maxmeridians,maxpuntets;
+void pintarEuropaParalel(float multiplicador){
+
 	int i=0,j=0;
 	for ( i=0;i<maxparalels;i++){
 		glBegin(GL_LINE_STRIP);
@@ -189,8 +213,8 @@ void pintarEuropaParalel(int multiplicador){
 	}
 	glFlush();
 }
-void pintarEuropaPerfil(int multiplicador){
-	//,maxparalels,maxmeridians,maxpuntets;
+void pintarEuropaPerfil(float multiplicador){
+
 	int i=0,j=0;
 	for ( i=0;i<maxperfils;i++){
 		glBegin(GL_LINE_STRIP);
@@ -216,21 +240,30 @@ void PintarCartografia (){
 
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	pintarEuropaPuntets(10);
+	//pintarEuropaPuntets(10);
+	if (meri==1)
 	pintarEuropaMeridia(10);
+	if (para==1)
 	pintarEuropaParalel(10);
-	pintarEuropaPerfil(10);
+	if (carto==1)
+	pintarEuropaPerfil(8.56);
 
 }
 
 void Tecles( unsigned char tecla, int x, int y) {
   switch(tecla) {
-  case 'a':
-
+  case 'm':
+	  meri = (meri==0) ? 1 : 0;
 	  break;
-  case 'z':
-
+  case 'p':
+	  para = (para==0) ? 1 : 0;
 	  break;
+  case 'c':
+	  carto = (carto==0) ? 1 : 0;
+  	  break;
+    case 'g':
+
+  	  break;
   case 27:
     exit(0);    break;
   }
