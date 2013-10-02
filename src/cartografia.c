@@ -25,21 +25,7 @@ float IncX, IncY, IncZ;
 
 
 
-void iniValors() {
 
-  MinX=ORIG;  MinY=ORIG;  MinZ=ORIG;
-  IncX=INC;  IncY=INC;  IncZ=INC;
-  ResX=DIM;  ResY=DIM;  ResZ=DIM;
-
-
-}
-
-
-void Init() {
-  glClearColor(0.0, 0.0, 0.0, 0.0);
-  mode = GL_FALSE;
-  meri=carto=para=1;
-}
 
 void CanviTamany(int width, int height) {
 
@@ -230,17 +216,9 @@ void pintarEuropaPerfil(float multiplicador){
 
 
 void PintarCartografia (){
-	glViewport(0,0,FimaX,FimaY);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(MinX,ResX,MinY,ResY);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	//pintarEuropaPuntets(10);
+	pintarEuropaPuntets(10);
 	if (meri==1)
 	pintarEuropaMeridia(10);
 	if (para==1)
@@ -250,22 +228,4 @@ void PintarCartografia (){
 
 }
 
-void Tecles( unsigned char tecla, int x, int y) {
-  switch(tecla) {
-  case 'm':
-	  meri = (meri==0) ? 1 : 0;
-	  break;
-  case 'p':
-	  para = (para==0) ? 1 : 0;
-	  break;
-  case 'c':
-	  carto = (carto==0) ? 1 : 0;
-  	  break;
-    case 'g':
 
-  	  break;
-  case 27:
-    exit(0);    break;
-  }
-  glutPostRedisplay();
-}

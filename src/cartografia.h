@@ -13,6 +13,9 @@
 #define DIM 256
 #define INC 1.0
 
+extern int MinX, MinY, MinZ, ResX, ResY, ResZ;
+extern float IncX, IncY, IncZ;
+
 extern GLenum  doubleBuffer, mode;
 extern int FimaX,FimaY;
 extern int meri,para,carto;
@@ -32,8 +35,8 @@ struct puntoflo paralel [20][1820];
 struct puntoflo meridian [20][1820];
 struct puntoflo puntets [4420][2];
 
-void iniValors();
-void Init();
+//void iniValors();
+//void Init();
 void CanviTamany(int width, int height);
 void Tecles( unsigned char tecla, int x, int y) ;
 
