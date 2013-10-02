@@ -169,7 +169,7 @@ void pintarEuropaPuntets (float multiplicador) {
 		glVertex3f((float)puntets[i][1].x*multiplicador,(float)puntets[i][1].y*multiplicador,0.0);
 		glEnd();
 	}
-	glFlush();
+	//glFlush();
 }
 void pintarEuropaMeridia(float multiplicador){
 
@@ -183,7 +183,7 @@ void pintarEuropaMeridia(float multiplicador){
 		}
 		glEnd();
 	}
-	glFlush();
+	//glFlush();
 }
 void pintarEuropaParalel(float multiplicador){
 
@@ -197,21 +197,21 @@ void pintarEuropaParalel(float multiplicador){
 		}
 		glEnd();
 	}
-	glFlush();
+//	glFlush();
 }
 void pintarEuropaPerfil(float multiplicador){
 
 	int i=0,j=0;
 	for ( i=0;i<maxperfils;i++){
 		glBegin(GL_LINE_STRIP);
-		glColor3f(1,1,1);
+		glColor3f(0.6,0.6,0.6);
 		for( j=0;perfil[i][j+1].x!=0;j++){
 			glVertex3f((float)perfil[i][j].x*multiplicador,(float)perfil[i][j].y*multiplicador,0.0);
 			glVertex3f((float)perfil[i][j+1].x*multiplicador,(float)perfil[i][j+1].y*multiplicador,0.0);
 		}
 		glEnd();
 	}
-	glFlush();
+	//glFlush();
 }
 
 
@@ -225,6 +225,8 @@ void PintarCartografia (){
 	pintarEuropaParalel(10);
 	if (carto==1)
 	pintarEuropaPerfil(8.56);
+
+	glFlush();
 
 }
 

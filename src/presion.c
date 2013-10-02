@@ -12,13 +12,17 @@
 
 float geopuntos[35][25];
 
+float micolor[3];
+
+float maxvalor,minvalor;
+
 int geo,geopint;
 
 void llegirEuropaGeo(char* nomFitxer) {
 	FILE  *f;
 	int i, j,k;
 	int fil,col;
-	float maxvalor,minvalor;
+
 	//int punts;
 	char s[4]="    ";
 	struct puntoflo punttemporalX;
@@ -48,23 +52,61 @@ void llegirEuropaGeo(char* nomFitxer) {
 	//maxmeridians=k;
 }
 
+void transferencia (float propietat){
+
+	/// aqui asigno color per pintar
+	/// calcular con max , min    de los valores del geopressio
+//float divisor=3;
+float pondera;
+
+pondera= (maxvalor-minvalor)/2;
+
+if (propietat < pondera ){
+	if(pondera/2 < propietat){
+		micolor[0]=0.3;
+		micolor[1]=1.0;
+		micolor[2]=0.0;
+	}else{
+		micolor[0]=1.0;
+		micolor[1]=0.6;
+		micolor[2]=0.0;
+	}
+}else{
+	if(pondera*3/2 < propietat){
+		micolor[0]=0.0;
+		micolor[1]=1.0;
+		micolor[2]=0.3;
+	}else{
+		micolor[0]=0.0;
+		micolor[1]=0.6;
+		micolor[2]=1.0;
+	}
+}
+
+}
+
+
+
 void PintarGeoPressio (float multiplicador){
 
 	// calculo el desplazamiento de cada valor * fila * col
 	float desplax,desplay;
 	// FimaX/maxX incremento
-	desplax=0.0;
-	desplay=0.0;
+	desplax=FimaX/35;
+	desplay=FimaY/25;
 
 	int i=0,j=0;
-		for ( i=0;i<maxmeridians;i++){
-		//	glBegin(GL_LINE_STRIP);
-		//	glColor3f(0.4,0.4,0.4);
-			for( j=0;meridian[i][j+1].x!=0;j++){
-			//	glVertex3f((float)meridian[i][j].x*multiplicador,(float)meridian[i][j].y*multiplicador,0.0);
-		//		glVertex3f((float)meridian[i][j+1].x*multiplicador,(float)meridian[i][j+1].y*multiplicador,0.0);
+		for ( i=0;i<35;i++){
+			for ( j=0;j<25;j++){
+				glBegin(GL_POLYGON);
+				transferencia(geopuntos[i][j]);
+				glColor3f(micolor[0],micolor[1],micolor[2]);
+				glVertex3f(i*desplax,j*desplay,0.0);
+				glVertex3f((i+1)*desplax,j*desplay,0.0);
+				glVertex3f((i+1)*desplax,(j+1)*desplay,0.0);
+				glVertex3f(i*desplax,(j+1)*desplay,0.0);
+				glEnd();
+
 			}
-		//	glEnd();
 		}
-	//	glFlush();
 }
