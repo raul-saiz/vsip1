@@ -13,20 +13,20 @@
 float geopuntos[35][25];
 
 float micolor[3];
-
+int fil,col;
 float maxvalor,minvalor;
-
+struct puntoflo punttemporalX;
+struct puntoflo punttemporalY;
 int geo,geopint;
 
 void llegirEuropaGeo(char* nomFitxer) {
 	FILE  *f;
 	int i, j,k;
-	int fil,col;
+
 
 	//int punts;
 	char s[4]="    ";
-	struct puntoflo punttemporalX;
-	struct puntoflo punttemporalY;
+
 
 	f=fopen(nomFitxer,"r");
 	if (!f)    {
@@ -59,10 +59,19 @@ void transferencia (float propietat){
 //float divisor=3;
 float pondera;
 
-pondera= (maxvalor-minvalor)/2;
+pondera= (maxvalor-minvalor)/4;
+//pondera += minvalor;
 
-if (propietat < pondera ){
-	if(pondera/2 < propietat){
+// color rojo funcion y=x
+//micolor[0]=
+// color green funcion y=1-x
+//micolor[1]=
+// color blue funcion y=x*2  ---
+//micolor[2]=
+
+
+if (propietat < minvalor + 2*pondera  ){
+	if(propietat < minvalor + pondera ){
 		micolor[0]=0.3;
 		micolor[1]=1.0;
 		micolor[2]=0.0;
@@ -72,7 +81,7 @@ if (propietat < pondera ){
 		micolor[2]=0.0;
 	}
 }else{
-	if(pondera*3/2 < propietat){
+	if(propietat < minvalor + 3*pondera){
 		micolor[0]=0.0;
 		micolor[1]=1.0;
 		micolor[2]=0.3;
@@ -90,23 +99,42 @@ if (propietat < pondera ){
 void PintarGeoPressio (float multiplicador){
 
 	// calculo el desplazamiento de cada valor * fila * col
-	float desplax,desplay;
 	// FimaX/maxX incremento
-	desplax=FimaX/35;
-	desplay=FimaY/25;
+
+	float desplax,desplay;
+
+	desplax=punttemporalX.y/fil*multiplicador;
+	desplay=punttemporalY.y/col*multiplicador;
 
 	int i=0,j=0;
-		for ( i=0;i<35;i++){
-			for ( j=0;j<25;j++){
+		for ( i=0;i<fil;i++){
+			for ( j=0;j<col;j++){
+
+
+				//fprintf(stdout,"%.2f -- %.2f %.2f %.2f | ",geopuntos[i][j],micolor[0],micolor[1],micolor[2]);
+
 				glBegin(GL_POLYGON);
+
 				transferencia(geopuntos[i][j]);
 				glColor3f(micolor[0],micolor[1],micolor[2]);
 				glVertex3f(i*desplax,j*desplay,0.0);
+
+				transferencia(geopuntos[i+1][j]);
+				glColor3f(micolor[0],micolor[1],micolor[2]);
 				glVertex3f((i+1)*desplax,j*desplay,0.0);
+
+				transferencia(geopuntos[i+1][j+1]);
+				glColor3f(micolor[0],micolor[1],micolor[2]);
 				glVertex3f((i+1)*desplax,(j+1)*desplay,0.0);
+
+				transferencia(geopuntos[i][j+1]);
+				glColor3f(micolor[0],micolor[1],micolor[2]);
 				glVertex3f(i*desplax,(j+1)*desplay,0.0);
+
 				glEnd();
 
 			}
+			//fprintf(stdout,"\n");
+
 		}
 }

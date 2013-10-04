@@ -22,13 +22,16 @@ void iniValors() {
 void Init() {
   glClearColor(0.0, 0.0, 0.0, 0.0);
   mode = GL_FALSE;
-  meri=carto=para=geopint=1;
+  meri=carto=para=geopint=punt=1;
   geo=0;
 }
 
 
 void Tecles( unsigned char tecla, int x, int y) {
   switch(tecla) {
+  case 'l':
+  	  punt = (punt==0) ? 1 : 0;
+  	  break;
   case 'm':
 	  meri = (meri==0) ? 1 : 0;
 	  break;
@@ -83,8 +86,9 @@ void Pintar(){
 	glLoadIdentity();
 
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	PintarGeoPressio(10.0);
 	PintarCartografia();
-	PintarGeoPressio(1.0);
 }
 
 

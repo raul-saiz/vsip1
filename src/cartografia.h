@@ -18,7 +18,7 @@ extern float IncX, IncY, IncZ;
 
 extern GLenum  doubleBuffer, mode;
 extern int FimaX,FimaY;
-extern int meri,para,carto;
+extern int meri,para,carto,punt;
 
 //extern int     PLA;
 typedef struct punto{
