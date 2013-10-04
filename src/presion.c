@@ -54,43 +54,18 @@ void llegirEuropaGeo(char* nomFitxer) {
 
 void transferencia (float propietat){
 
-	/// aqui asigno color per pintar
-	/// calcular con max , min    de los valores del geopressio
-//float divisor=3;
-float pondera;
-
-pondera= (maxvalor-minvalor)/4;
-//pondera += minvalor;
-
 // color rojo funcion y=x
-//micolor[0]=
+	//micolor[0]=sin(propietat);
+micolor[0]=((maxvalor-minvalor)-(propietat-minvalor))/maxvalor;
 // color green funcion y=1-x
-//micolor[1]=
-// color blue funcion y=x*2  ---
-//micolor[2]=
-
-
-if (propietat < minvalor + 2*pondera  ){
-	if(propietat < minvalor + pondera ){
-		micolor[0]=0.3;
-		micolor[1]=1.0;
-		micolor[2]=0.0;
-	}else{
-		micolor[0]=1.0;
-		micolor[1]=0.6;
-		micolor[2]=0.0;
-	}
+micolor[1]=1-micolor[0];
+// color blue funcion y=x^2  ---
+if ( (((maxvalor-minvalor)-(propietat-minvalor))/maxvalor) <= 0.5 ){
+	micolor[2]=(1-micolor[0])*2;//
 }else{
-	if(propietat < minvalor + 3*pondera){
-		micolor[0]=0.0;
-		micolor[1]=1.0;
-		micolor[2]=0.3;
-	}else{
-		micolor[0]=0.0;
-		micolor[1]=0.6;
-		micolor[2]=1.0;
-	}
+	micolor[2]=micolor[0]/2;//
 }
+
 
 }
 
