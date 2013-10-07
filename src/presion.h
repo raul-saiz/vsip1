@@ -8,10 +8,12 @@
 #ifndef PRESION_H_
 #define PRESION_H_
 
-extern int geo,geopint;
+extern int geo,geopint,isos;
 
 void llegirEuropaGeo(char* nomFitxer);
 
-void PintarGeoPressio(float multiplicador);
+//void PintarGeoPressio(float multiplicador);
+
+void PintarPressio();
 
 #endif /* PRESION_H_ */

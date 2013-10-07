@@ -23,7 +23,7 @@ void Init() {
   glClearColor(0.0, 0.0, 0.0, 0.0);
   mode = GL_FALSE;
   meri=carto=para=geopint=punt=1;
-  geo=0;
+  geo=isos=1;
 }
 
 
@@ -68,6 +68,10 @@ void Tecles( unsigned char tecla, int x, int y) {
     	geopint = (geopint==0) ? 1 : 0;
     	// pintar o no geopressions
     	break;
+    case 'i':
+       	isos = (isos==0) ? 1 : 0;
+       	// pintar o no geopressions
+       	break;
   case 27:
     exit(0);    break;
   }
@@ -87,7 +91,7 @@ void Pintar(){
 
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	PintarGeoPressio(10.0);
+	PintarPressio();
 	PintarCartografia();
 }
 
