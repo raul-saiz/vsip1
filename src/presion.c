@@ -54,16 +54,14 @@ void llegirEuropaGeo(char* nomFitxer) {
 
 void transferencia (float propietat){
 
-// color rojo funcion y=x
-	//micolor[0]=sin(propietat);
-micolor[0]=((maxvalor-minvalor)-(propietat-minvalor))/maxvalor;
-// color green funcion y=1-x
-micolor[1]=1-micolor[0];
-// color blue funcion y=x^2  ---
-if ( (((maxvalor-minvalor)-(propietat-minvalor))/maxvalor) <= 0.5 ){
-	micolor[2]=(1-micolor[0])*2;//
+micolor[2]=(propietat-minvalor)/(maxvalor-minvalor);
+
+micolor[0]=1-micolor[2];
+
+if ( (propietat-minvalor) <= (maxvalor-minvalor)/2 ){
+	micolor[1]=(propietat-minvalor)/((maxvalor-minvalor)/2);
 }else{
-	micolor[2]=micolor[0]/2;//
+	micolor[1]=2-((propietat-minvalor)/((maxvalor-minvalor)/2));//
 }
 
 
