@@ -134,6 +134,8 @@ void PintarGeoPressio (float multiplicador){
 void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont punt3,struct puntcont punt4, float valor,float increm ){
 
 	int indictot=0,indic1=0,indic2=0,indic3=0,indic4=0;
+	struct puntcont temp1;
+	//struct puntcont temp2;
 
 	 if (punt1.val > valor-increm && punt1.val <= valor+increm)
 	 {
@@ -177,50 +179,120 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 					case 2: // añado el  punto medio
 						fprintf(stdout,"caso 2\n");
 
-//						if (indic1 && indic2) // punto medio del lado
-//							puntscontorn[i][j]=punt1;
-//						if (indic2 && indic3)// punto medio del lado
-//							puntscontorn[i][j]=punt1;
-//						if (indic3 && indic4)// punto medio del lado
-//							puntscontorn[i][j]=punt1;
-//						if (indic1 && indic4)// punto medio del lado
-//							puntscontorn[i][j]=punt1;
-//						if (indic1 && indic3) // miro diagonal, punto medio
-//							puntscontorn[i][j]=punt1;
-//						if (indic2 && indic4) // miro diagonal, punto medio
-//							puntscontorn[i][j]=punt1;
+						//creo el punto medio temporal
+
+						if (indic1 && indic2){
+							temp1.x=(punt1.x+punt2.x)/2;
+							temp1.y=(punt1.y+punt2.y)/2;
+							temp1.val=(punt1.val+punt2.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							// punto medio del lado
+						}
+
+						if (indic2 && indic3){
+							temp1.x=(punt3.x+punt2.x)/2;
+							temp1.y=(punt3.y+punt2.y)/2;
+							temp1.val=(punt3.val+punt2.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							// punto medio del lado
+						}// punto medio del lado
+
+						if (indic3 && indic4){
+							temp1.x=(punt3.x+punt4.x)/2;
+							temp1.y=(punt3.y+punt4.y)/2;
+							temp1.val=(punt3.val+punt4.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							// punto medio del lado
+						}// punto medio del lado
+
+						if (indic1 && indic4){
+							temp1.x=(punt1.x+punt4.x)/2;
+							temp1.y=(punt1.y+punt4.y)/2;
+							temp1.val=(punt1.val+punt4.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							// punto medio del lado
+						}// punto medio del lado
+
+						if (indic1 && indic3){
+							temp1.x=(punt1.x+punt3.x)/2;
+							temp1.y=(punt1.y+punt3.y)/2;
+							temp1.val=(punt1.val+punt3.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							// punto medio del lado
+						} // miro diagonal, punto medio
+
+						if (indic2 && indic4){
+							temp1.x=(punt4.x+punt2.x)/2;
+							temp1.y=(punt4.y+punt2.y)/2;
+							temp1.val=(punt4.val+punt2.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							// punto medio del lado
+						} // miro diagonal, punto medio
+
 						indicpunt++;
 						break;
 					case 3:  // añado los dos puntos medios
 						fprintf(stdout,"caso 3\n");
 
-//						if (indic1 && indic2 && indic3)
-//						{
-//							puntscontorn[i][j]=punt1;// punto medio del lado
-//							puntscontorn[i][j]=punt1;
-//						}
-//
-//						if (indic4 && indic2 && indic3) // punto medio del lado
-//						{
-//							puntscontorn[i][j]=punt1;// punto medio del lado
-//							puntscontorn[i][j]=punt1;
-//						}
-//						if (indic1 && indic4 && indic3) // punto medio del lado
-//						{
-//							puntscontorn[i][j]=punt1;// punto medio del lado
-//							puntscontorn[i][j]=punt1;
-//						}
-//						if (indic1 && indic4 && indic2) // punto medio del lado
-//						{
-//							puntscontorn[i][j]=punt1;// punto medio del lado
-//							puntscontorn[i][j]=punt1;
-//						}
-						indicpunt++;
+						if (indic1 && indic2 && indic3)
+						{
+							temp1.x=(punt1.x+punt2.x)/2;
+							temp1.y=(punt1.y+punt2.y)/2;
+							temp1.val=(punt1.val+punt2.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
+							temp1.x=(punt3.x+punt2.x)/2;
+							temp1.y=(punt3.y+punt2.y)/2;
+							temp1.val=(punt3.val+punt2.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
+						}
+
+						if (indic4 && indic2 && indic3) // punto medio del lado
+						{
+							temp1.x=(punt3.x+punt2.x)/2;
+							temp1.y=(punt3.y+punt2.y)/2;
+							temp1.val=(punt3.val+punt2.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
+							temp1.x=(punt3.x+punt4.x)/2;
+							temp1.y=(punt3.y+punt4.y)/2;
+							temp1.val=(punt3.val+punt4.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
+						}
+						if (indic1 && indic4 && indic3) // punto medio del lado
+						{
+							temp1.x=(punt3.x+punt4.x)/2;
+							temp1.y=(punt3.y+punt4.y)/2;
+							temp1.val=(punt3.val+punt4.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
+							temp1.x=(punt1.x+punt4.x)/2;
+							temp1.y=(punt1.y+punt4.y)/2;
+							temp1.val=(punt1.val+punt4.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
+						}
+						if (indic1 && indic4 && indic2) // punto medio del lado
+						{
+							temp1.x=(punt1.x+punt2.x)/2;
+							temp1.y=(punt1.y+punt2.y)/2;
+							temp1.val=(punt1.val+punt2.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
+							temp1.x=(punt1.x+punt4.x)/2;
+							temp1.y=(punt1.y+punt4.y)/2;
+							temp1.val=(punt1.val+punt4.val)/2;
+							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
+						}
+
 						break;
 					case 4:  // subdivido en 4 partes y vulevo a relizar este case
 						fprintf(stdout,"caso 4\n");
 
-						//buscapuntos();
+
 						break;
 	 }
 
@@ -228,12 +300,13 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 
 void PintarIsoPressio (int miintervalo){
 
+	int i=0,j=0,k=0;
 	// definir las presiones que hay que buscar para hacer un for de ellas en los valores
 	// para cada valor recorrer las estructuras pintando al final
 
 	// for ( diferentes valores a buscar )     ENGLOBA LOS DOS FORS , BUSQUEDA Y PINTAR.
 
-		int i=0,j=0;
+
 		for ( i=0;i<fil;i++){
 			for ( j=0;j<col;j++){
 				buscaPuntos (puntsini[i][j],puntsini[i][j+1],puntsini[i+1][j+1],puntsini[i+1][j],310,miintervalo);
@@ -242,8 +315,15 @@ void PintarIsoPressio (int miintervalo){
 		}
 
 		// for para pintar lo hallado en los for anteriores
-
-
+		glBegin(GL_LINE_STRIP);
+		glColor3f(1,1,1);
+		glVertex3f((float)puntscontorn[0].x,(float)puntscontorn[0].y,0.0);
+		for ( k=1; k<indicpunt;k++)
+		{
+			// pinto lineas
+			glVertex3f((float)puntscontorn[k].x,(float)puntscontorn[k].y,0.0);
+		}
+		glEnd();
 
 		// limpio estructura de puntos pintados
 		indicpunt=0;
@@ -255,7 +335,7 @@ void PintarPressio(){
 	if (geopint==1)
 	PintarGeoPressio(10);
 	if (isos==1)
-	PintarIsoPressio(5);
+	PintarIsoPressio(4);
 
 	glFlush();
 

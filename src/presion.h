@@ -14,7 +14,7 @@ typedef struct puntcont{
 	float x;
 	float y;
 	float val;
-};
+}kuku;
 
 
 
