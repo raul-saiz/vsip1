@@ -46,23 +46,23 @@ void Tecles( unsigned char tecla, int x, int y) {
     	if (geo==9)
     		geo=0;
     	if ( geo == 8 )
-    		llegirEuropaGeo("./data/geo48.grd");
+    		llegirEuropaGeo("./data/geo48.grd",10);
     	if ( geo == 7 )
-    		llegirEuropaGeo("./data/geo42.grd");
+    		llegirEuropaGeo("./data/geo42.grd",10);
     	if ( geo == 6 )
-    		llegirEuropaGeo("./data/geo36.grd");
+    		llegirEuropaGeo("./data/geo36.grd",10);
     	if ( geo == 5 )
-    		llegirEuropaGeo("./data/geo30.grd");
+    		llegirEuropaGeo("./data/geo30.grd",10);
     	if ( geo == 4 )
-    		llegirEuropaGeo("./data/geo24.grd");
+    		llegirEuropaGeo("./data/geo24.grd",10);
     	if ( geo == 3 )
-    		llegirEuropaGeo("./data/geo18.grd");
+    		llegirEuropaGeo("./data/geo18.grd",10);
     	if ( geo == 2 )
-    		llegirEuropaGeo("./data/geo12.grd");
+    		llegirEuropaGeo("./data/geo12.grd",10);
     	if ( geo == 1 )
-    		llegirEuropaGeo("./data/geo06.grd");
+    		llegirEuropaGeo("./data/geo06.grd",10);
     	if ( geo == 0 )
-    		llegirEuropaGeo("./data/geo00.grd");
+    		llegirEuropaGeo("./data/geo00.grd",10);
     	break;
     case 't':
     	geopint = (geopint==0) ? 1 : 0;
@@ -93,6 +93,7 @@ void Pintar(){
 
 	PintarPressio();
 	PintarCartografia();
+
 }
 
 
@@ -106,7 +107,7 @@ int main(int argc, char *argv[]) {
   llegirEuropaMeridia("./data/euro_meridians.dat");
   llegirEuropaPuntets("./data/euro_puntets.dat");
 
-  llegirEuropaGeo("./data/geo00.grd");
+  llegirEuropaGeo("./data/geo00.grd",10);
 
   glutInit(&argc, argv);
   doubleBuffer=GL_FALSE;
