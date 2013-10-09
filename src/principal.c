@@ -24,20 +24,23 @@ void Init() {
   mode = GL_FALSE;
   meri=carto=para=geopint=punt=1;
   geo=isos=1;
+  intervalo=10;
 }
 
 
 void Tecles( unsigned char tecla, int x, int y) {
   switch(tecla) {
-  case 'l':
-  	  punt = (punt==0) ? 1 : 0;
-  	  break;
+//  case 'l':
+//
+//  	  break;
   case 'm':
+	  punt = (punt==0) ? 1 : 0;
 	  meri = (meri==0) ? 1 : 0;
-	  break;
-  case 'p':
 	  para = (para==0) ? 1 : 0;
 	  break;
+//  case 'p':
+//
+//	  break;
   case 'c':
 	  carto = (carto==0) ? 1 : 0;
   	  break;
@@ -64,7 +67,7 @@ void Tecles( unsigned char tecla, int x, int y) {
     	if ( geo == 0 )
     		llegirEuropaGeo("./data/geo00.grd",10);
     	break;
-    case 't':
+    case 'h':
     	geopint = (geopint==0) ? 1 : 0;
     	// pintar o no geopressions
     	break;
@@ -72,6 +75,15 @@ void Tecles( unsigned char tecla, int x, int y) {
        	isos = (isos==0) ? 1 : 0;
        	// pintar o no geopressions
        	break;
+    case 'a':
+          // intervalos de las presiones
+    	intervalo++;
+          	break;
+    case 'z':
+            intervalo-- ;
+        	if ( intervalo < 0)
+        		intervalo=0;
+              	break;
   case 27:
     exit(0);    break;
   }

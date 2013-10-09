@@ -8,7 +8,7 @@
 #ifndef PRESION_H_
 #define PRESION_H_
 
-extern int geo,geopint,isos;
+extern int geo,geopint,isos,intervalo;
 
 typedef struct puntcont{
 	float x;

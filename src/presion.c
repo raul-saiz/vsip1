@@ -27,7 +27,7 @@ int fil,col;
 float maxvalor,minvalor;
 struct puntoflo punttemporalX;
 struct puntoflo punttemporalY;
-int geo,geopint,isos;
+int geo,geopint,isos,intervalo;
 
 void llegirEuropaGeo(char* nomFitxer,int multiplicador) {
 	FILE  *f;
@@ -340,7 +340,7 @@ void PintarPressio(){
 	if (geopint==1)
 	PintarGeoPressio(10);
 	if (isos==1)
-	PintarIsoPressio(10);
+	PintarIsoPressio(intervalo);
 
 	glFlush();
 
