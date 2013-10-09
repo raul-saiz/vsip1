@@ -15,7 +15,7 @@ float geopuntos[35][25];
 
 struct puntcont puntsini[35][25];
 
-struct puntcont puntscontorn[1000];
+struct puntcont puntscontorn[3000];
 
 float interx;
 float intery;
@@ -131,29 +131,31 @@ void PintarGeoPressio (float multiplicador){
 		}
 }
 
-void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont punt3,struct puntcont punt4, float valor,float increm ){
+void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont punt3,struct puntcont punt4, float valor ){
 
 	int indictot=0,indic1=0,indic2=0,indic3=0,indic4=0;
 	struct puntcont temp1;
 	//struct puntcont temp2;
 
-	 if (punt1.val > valor-increm && punt1.val <= valor+increm)
+	indictot=0;indic1=0;indic2=0;indic3=0;indic4=0;
+
+	 if (punt1.val >= valor-1 && punt1.val <= valor+1 )  //punt1.val > valor-increm && punt1.val <= valor+increm
 	 {
 		 indictot++;
 		 indic1=1;
 	 }
 
-	 if (punt2.val > valor-increm && punt2.val <= valor+increm)
+	 if (punt2.val >= valor-1 && punt2.val <= valor+1 )
 	 {
 	 		 indictot++;
 	 		 indic2=1;
 	 	 }
-	 if (punt3.val > valor-increm && punt3.val <= valor+increm)
+	 if (punt3.val >= valor-1 && punt3.val <= valor+1)
 	 {
 	 		 indictot++;
 	 		 indic3=1;
 	 	 }
-	 if (punt4.val > valor-increm && punt4.val <= valor+increm)
+	 if (punt4.val >= valor-1 && punt4.val <= valor+1 )
 	 {
 	 		 indictot++;
 	 		 indic4=1;
@@ -161,7 +163,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 
 	 switch(indictot){
 					case 0:  // nada que hacer ....
-						//fprintf(stdout,"caso 0\n");
+						fprintf(stdout,"caso 0\n");
 						break;
 					case 1: // añado el punto como si pasase por el
 						fprintf(stdout,"caso 1\n");
@@ -300,16 +302,17 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 
 void PintarIsoPressio (int miintervalo){
 
-	int i=0,j=0,k=0;
+	int i=0,j=0,m=0;
+	float k;
 	// definir las presiones que hay que buscar para hacer un for de ellas en los valores
 	// para cada valor recorrer las estructuras pintando al final
-
+	k=minvalor;
 	// for ( diferentes valores a buscar )     ENGLOBA LOS DOS FORS , BUSQUEDA Y PINTAR.
-
+	while (k<=maxvalor){
 
 		for ( i=0;i<fil;i++){
 			for ( j=0;j<col;j++){
-				buscaPuntos (puntsini[i][j],puntsini[i][j+1],puntsini[i+1][j+1],puntsini[i+1][j],310,miintervalo);
+				buscaPuntos (puntsini[i][j],puntsini[i][j+1],puntsini[i+1][j+1],puntsini[i+1][j],k);
 
 			}
 		}
@@ -318,15 +321,17 @@ void PintarIsoPressio (int miintervalo){
 		glBegin(GL_LINE_STRIP);
 		glColor3f(1,1,1);
 		glVertex3f((float)puntscontorn[0].x,(float)puntscontorn[0].y,0.0);
-		for ( k=1; k<indicpunt;k++)
+		for ( m=1; m<indicpunt;m++)
 		{
 			// pinto lineas
-			glVertex3f((float)puntscontorn[k].x,(float)puntscontorn[k].y,0.0);
+			glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
 		}
 		glEnd();
 
 		// limpio estructura de puntos pintados
 		indicpunt=0;
+		k += miintervalo;
+	}
 
 }
 
@@ -335,7 +340,7 @@ void PintarPressio(){
 	if (geopint==1)
 	PintarGeoPressio(10);
 	if (isos==1)
-	PintarIsoPressio(4);
+	PintarIsoPressio(10);
 
 	glFlush();
 
