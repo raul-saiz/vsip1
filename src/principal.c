@@ -81,8 +81,8 @@ void Tecles( unsigned char tecla, int x, int y) {
           	break;
     case 'z':
             intervalo-- ;
-        	if ( intervalo < 0)
-        		intervalo=0;
+        	if ( intervalo < 2)
+        		intervalo=2;
               	break;
   case 27:
     exit(0);    break;
@@ -105,6 +105,7 @@ void Pintar(){
 
 	PintarPressio();
 	PintarCartografia();
+
 
 }
 
