@@ -139,7 +139,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 	struct puntcont temp1;
 	struct puntcont temp2;
 	struct puntcont temp3;
-	float discri=0.2;
+	float discri=0.1;
 
 
 	indictot=0;indic1=0;indic2=0;indic3=0;indic4=0;
@@ -171,20 +171,28 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 						//fprintf(stdout,"caso 0\n");
 						break;
 					case 1: // añado el punto como si pasase por el
-						//fprintf(stdout,"caso 1\n");
+						fprintf(stdout,"caso 1\n");
 
-						if (indic1>0)
+						if (indic1>0){
 							puntscontorn[indicpunt]=punt1;
-						if (indic2>0)
+							indicpunt++;
+						}
+						puntscontorn[indicpunt]=punt1;
+						if (indic2>0){
 							puntscontorn[indicpunt]=punt2;
-						if (indic3>0)
+							indicpunt++;
+						}
+						if (indic3>0){
 							puntscontorn[indicpunt]=punt3;
-						if (indic4>0)
+							indicpunt++;
+						}
+						if (indic4>0){
 							puntscontorn[indicpunt]=punt4;
-						indicpunt++;
+							indicpunt++;
+						}
 						break;
 					case 2: // añado el  punto medio
-						//fprintf(stdout,"caso 2\n");
+						fprintf(stdout,"caso 2\n");
 
 						//creo el punto medio temporal
 
@@ -193,6 +201,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 							temp1.y=(punt1.y+punt2.y)/2;
 							temp1.val=(punt1.val+punt2.val)/2;
 							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
 							// punto medio del lado
 						}
 
@@ -201,6 +210,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 							temp1.y=(punt3.y+punt2.y)/2;
 							temp1.val=(punt3.val+punt2.val)/2;
 							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
 							// punto medio del lado
 						}// punto medio del lado
 
@@ -209,6 +219,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 							temp1.y=(punt3.y+punt4.y)/2;
 							temp1.val=(punt3.val+punt4.val)/2;
 							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
 							// punto medio del lado
 						}// punto medio del lado
 
@@ -217,6 +228,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 							temp1.y=(punt1.y+punt4.y)/2;
 							temp1.val=(punt1.val+punt4.val)/2;
 							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
 							// punto medio del lado
 						}// punto medio del lado
 
@@ -225,6 +237,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 							temp1.y=(punt1.y+punt3.y)/2;
 							temp1.val=(punt1.val+punt3.val)/2;
 							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
 							// punto medio del lado
 						} // miro diagonal, punto medio
 
@@ -233,13 +246,84 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 							temp1.y=(punt4.y+punt2.y)/2;
 							temp1.val=(punt4.val+punt2.val)/2;
 							puntscontorn[indicpunt]=temp1;
+							indicpunt++;
 							// punto medio del lado
 						} // miro diagonal, punto medio
 
-						indicpunt++;
+
 						break;
 					case 3:  // añado los dos puntos medios
-						//fprintf(stdout,"caso 3\n");
+						fprintf(stdout,"caso 3\n");
+
+//						temp1.x=(punt1.x+punt2.x)/2;
+//												temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
+//												temp1.val=(punt1.val+punt2.val)/2;
+//
+//												temp2.x=(punt1.x+punt2.x)/2;
+//												temp2.y=(punt1.y+punt4.y)/2;		//  medio diagonal   ---  B
+//												temp2.val=(punt1.val+punt3.val)/2;
+//
+//												temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
+//												temp3.y=(punt1.y+punt4.y)/2; 			//  medio entre 1 y 4   --- C
+//												temp3.val=(punt1.val+punt4.val)/2;
+//
+//												buscaPuntos (punt1,temp1,temp2,temp3,valor);
+//
+//												////  SEGUNDO CUADRADO
+//												temp1.x=(punt1.x+punt2.x)/2;
+//												temp1.y=punt1.y;//(punt1.y+punt2.y)/2;		// ***  A  1y2
+//												temp1.val=(punt1.val+punt2.val)/2;
+//
+//												temp2.x=(punt1.x+punt2.x)/2;
+//												temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
+//												temp2.val=(punt1.val+punt3.val)/2;
+//
+//												temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
+//												temp3.y=(punt2.y+punt3.y)/2;				// medio entre 2 y 3   --- D
+//												temp3.val=(punt2.val+punt3.val)/2;
+//
+//												buscaPuntos (temp1,punt2,temp3,temp2,valor);
+//
+//												////  TERCER CUADRADO
+//												temp1.x=(punt4.x+punt3.x)/2;
+//												temp1.y=punt3.y;//(punt1.y+punt2.y)/2;    //  medio entre 3y 4  --  E
+//												temp1.val=(punt4.val+punt3.val)/2;
+//
+//												temp2.x=(punt1.x+punt2.x)/2;
+//												temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
+//												temp2.val=(punt1.val+punt3.val)/2;
+//
+//												temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
+//												temp3.y=(punt2.y+punt3.y)/2;					//   *** D   2y3
+//												temp3.val=(punt2.val+punt3.val)/2;
+//
+//												buscaPuntos (temp2,temp3,punt3,temp1,valor);
+//
+//
+//												/// CUARTO CUADRADO
+//												temp1.x=(punt4.x+punt3.x)/2;
+//												temp1.y=punt3.y;//(punt1.y+punt2.y)/2;			// E
+//												temp1.val=(punt4.val+punt3.val)/2;
+//
+//												temp2.x=(punt1.x+punt2.x)/2;
+//												temp2.y=(punt1.y+punt4.y)/2;				//  diag
+//												temp2.val=(punt1.val+punt3.val)/2;
+//
+//												temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
+//												temp3.y=(punt1.y+punt4.y)/2;					//  1y4
+//												temp3.val=(punt1.val+punt4.val)/2;
+//
+//												buscaPuntos (temp3,temp2,temp1,punt4,valor);
+//
+//
+
+
+
+
+
+
+
+
 
 						if (indic1 && indic2 && indic3)
 						{
@@ -297,7 +381,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 
 						break;
 					case 4:  // subdivido en 4 partes y vulevo a relizar este case
-						//fprintf(stdout,"caso 4\n");
+						fprintf(stdout,"caso 4\n");
 
 
 						// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
@@ -361,13 +445,26 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 
 						buscaPuntos (temp3,temp2,temp1,punt4,valor);
 
-
-
-
-						break;
+						glFlush();	break;
 	 }
 
 }
+
+//void eligeColor( float val, float inter){
+//
+//	float num;
+//
+//	num=maxvalor-minvalor;
+//
+//	num = (val+inter);
+//
+//
+//
+//	glColor3f(val-minvalor,val-minvalor,val-minvalor);
+//
+//
+//}
+
 
 void PintarIsoPressio (int miintervalo){
 
@@ -388,9 +485,10 @@ void PintarIsoPressio (int miintervalo){
 
 		// for para pintar lo hallado en los for anteriores
 		//glPolygonMode(GL_FRONT_AND_BACK,GL_PO);
-		glBegin(GL_POLYGON);
+		glBegin(GL_LINE_LOOP);
 
-		glColor3f(1,1,1);
+		//eligeColor(k,intervalo);
+		glColor3f(1,1,0);
 		glVertex3f((float)puntscontorn[0].x,(float)puntscontorn[0].y,0.0);
 		for ( m=1; m<indicpunt;m++)
 		{
@@ -398,8 +496,9 @@ void PintarIsoPressio (int miintervalo){
 			glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
 		}
 		glEnd();
-
+		fprintf(stdout,"valor %f , %i puntos a pintar\n",k,indicpunt);
 		// limpio estructura de puntos pintados
+		glFlush();
 		indicpunt=0;
 		k += miintervalo;
 	}
