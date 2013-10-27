@@ -24,7 +24,7 @@ void Init() {
   mode = GL_FALSE;
   meri=carto=para=geopint=punt=1;
   geo=isos=1;
-  intervalo=10;
+  intervalo=15;
 }
 
 
@@ -78,12 +78,14 @@ void Tecles( unsigned char tecla, int x, int y) {
     case 'a':
           // intervalos de las presiones
     	intervalo++;
+    	if ( intervalo > 25)
+    	    intervalo=25;
           	break;
     case 'z':
             intervalo-- ;
-        	if ( intervalo < 2)
-        		intervalo=2;
-              	break;
+        	if ( intervalo < 5)
+        		intervalo=5;
+        	break;
   case 27:
     exit(0);    break;
   }
