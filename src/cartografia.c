@@ -163,7 +163,7 @@ void llegirEuropaPuntets (char* nomFitxer) {
 void pintarEuropaPuntets (float multiplicador) {
 	int i=0;
 	glBegin(GL_POINTS);
-	glColor3f(1,1,1);
+	glColor3f(0,0,0);
 
 	for ( i=0;i<maxpuntets;i++){
 
@@ -179,7 +179,7 @@ void pintarEuropaMeridia(float multiplicador){
 	int i=0,j=0;
 	for ( i=0;i<maxmeridians;i++){
 		glBegin(GL_LINE_STRIP);
-		glColor3f(1,1,1);
+		glColor3f(0,0,0);
 		for( j=0;meridian[i][j+1].x!=0;j++){
 			glVertex3f((float)meridian[i][j].x*multiplicador,(float)meridian[i][j].y*multiplicador,0.0);
 			glVertex3f((float)meridian[i][j+1].x*multiplicador,(float)meridian[i][j+1].y*multiplicador,0.0);
@@ -193,7 +193,7 @@ void pintarEuropaParalel(float multiplicador){
 	int i=0,j=0;
 	for ( i=0;i<maxparalels;i++){
 		glBegin(GL_LINE_STRIP);
-		glColor3f(1,1,1);
+		glColor3f(0,0,0);
 		for( j=0;paralel[i][j+1].x!=0;j++){
 			glVertex3f((float)paralel[i][j].x*multiplicador,(float)paralel[i][j].y*multiplicador,0.0);
 			glVertex3f((float)paralel[i][j+1].x*multiplicador,(float)paralel[i][j+1].y*multiplicador,0.0);
@@ -207,7 +207,7 @@ void pintarEuropaPerfil(float multiplicador){
 	int i=0,j=0;
 	for ( i=0;i<maxperfils;i++){
 		glBegin(GL_LINE_STRIP);
-		glColor3f(1,1,1);
+		glColor3f(0,0,0);
 		for( j=0;perfil[i][j+1].x!=0;j++){
 			glVertex3f((float)perfil[i][j].x*multiplicador,(float)perfil[i][j].y*multiplicador,0.0);
 			glVertex3f((float)perfil[i][j+1].x*multiplicador,(float)perfil[i][j+1].y*multiplicador,0.0);
