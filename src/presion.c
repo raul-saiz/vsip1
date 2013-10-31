@@ -20,6 +20,9 @@ struct puntcont puntscontorn[7000];
 float interx;
 float intery;
 
+
+int max_profundidad = 4;
+
 int indicpunt=0;
 
 float micolor[3];
@@ -84,7 +87,7 @@ void transferencia (float propietat){
 	if ( (propietat-minvalor) <= (maxvalor-minvalor)/2 ){
 		micolor[1]=(propietat-minvalor)/((maxvalor-minvalor)/2);
 	}else{
-		micolor[1]=2-((propietat-minvalor)/((maxvalor-minvalor)/2));//
+		micolor[1]=((propietat-minvalor)/((maxvalor-minvalor)/2));//
 	}
 
 }
@@ -107,21 +110,29 @@ void PintarGeoPressio (float multiplicador){
 
 			glBegin(GL_POLYGON);
 
-			transferencia(geopuntos[i][j]);
+			//transferencia(geopuntos[i][j]);
+			transferencia(puntsini[i][j].val);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f(i*desplax,j*desplay,0.0);
+			//glVertex3f(i*desplax,j*desplay,0.0);
+			glVertex3f(puntsini[i][j].x ,puntsini[i][j].y,0.0);
 
-			transferencia(geopuntos[i+1][j]);
+			//transferencia(geopuntos[i+1][j]);
+			transferencia(puntsini[i+1][j].val);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f((i+1)*desplax,j*desplay,0.0);
+			//glVertex3f((i+1)*desplax,j*desplay,0.0);
+			glVertex3f(puntsini[i+1][j].x ,puntsini[i+1][j].y,0.0);
 
-			transferencia(geopuntos[i+1][j+1]);
+			//transferencia(geopuntos[i+1][j+1]);
+			transferencia(puntsini[i+1][j+1].val);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f((i+1)*desplax,(j+1)*desplay,0.0);
+			//glVertex3f((i+1)*desplax,(j+1)*desplay,0.0);
+			glVertex3f(puntsini[i+1][j+1].x ,puntsini[i+1][j+1].y,0.0);
 
-			transferencia(geopuntos[i][j+1]);
+			//transferencia(geopuntos[i][j+1]);
+			transferencia(puntsini[i][j+1].val);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f(i*desplax,(j+1)*desplay,0.0);
+			//glVertex3f(i*desplax,(j+1)*desplay,0.0);
+			glVertex3f(puntsini[i][j+1].x ,puntsini[i][j+1].y,0.0);
 
 			glEnd();
 
@@ -176,7 +187,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 		//fprintf(stdout,"caso 0\n");
 		break;
 	case 1: // añado el punto como si pasase por el
-		fprintf(stdout,"caso 1\n");
+		//fprintf(stdout,"caso 1\n");
 
 		if (indic1>0){
 			//							puntscontorn[indicpunt]=punt1;
@@ -242,10 +253,10 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 
 		break;
 	case 2: // añado el  punto medio
-		fprintf(stdout,"caso 2\n");
+		//fprintf(stdout,"caso 2\n");
 
 
-		if ( profundidad < 3){
+		if ( profundidad < max_profundidad){
 			// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
 			temp1.x=(punt1.x+punt2.x)/2;
 			temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
@@ -424,9 +435,9 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 
 		break;
 	case 3:  // añado los dos puntos medios
-		fprintf(stdout,"caso 3\n");
+		//fprintf(stdout,"caso 3\n");
 
-		if ( profundidad < 3){
+		if ( profundidad < max_profundidad){
 			// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
 			temp1.x=(punt1.x+punt2.x)/2;
 			temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
@@ -550,70 +561,76 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 		break;
 	case 4:  // subdivido en 4 partes y vulevo a relizar este case
 		fprintf(stdout,"caso 4\n");
+		if ( profundidad < max_profundidad){
+
+								// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
+								temp1.x=(punt1.x+punt2.x)/2;
+								temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
+								temp1.val=(punt1.val+punt2.val)/2;
+
+								temp2.x=(punt1.x+punt2.x)/2;
+								temp2.y=(punt1.y+punt4.y)/2;		//  medio diagonal   ---  B
+								temp2.val=(punt1.val+punt3.val)/2;
+
+								temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
+								temp3.y=(punt1.y+punt4.y)/2; 			//  medio entre 1 y 4   --- C
+								temp3.val=(punt1.val+punt4.val)/2;
+
+								buscaPuntos (punt1,temp1,temp2,temp3,valor,profundidad+1);
+
+								////  SEGUNDO CUADRADO
+								temp1.x=(punt1.x+punt2.x)/2;
+								temp1.y=punt1.y;//(punt1.y+punt2.y)/2;		// ***  A  1y2
+								temp1.val=(punt1.val+punt2.val)/2;
+
+								temp2.x=(punt1.x+punt2.x)/2;
+								temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
+								temp2.val=(punt1.val+punt3.val)/2;
+
+								temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
+								temp3.y=(punt2.y+punt3.y)/2;				// medio entre 2 y 3   --- D
+								temp3.val=(punt2.val+punt3.val)/2;
+
+								buscaPuntos (temp1,punt2,temp3,temp2,valor,profundidad+1);
+
+								////  TERCER CUADRADO
+								temp1.x=(punt4.x+punt3.x)/2;
+								temp1.y=punt3.y;//(punt1.y+punt2.y)/2;    //  medio entre 3y 4  --  E
+								temp1.val=(punt4.val+punt3.val)/2;
+
+								temp2.x=(punt1.x+punt2.x)/2;
+								temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
+								temp2.val=(punt1.val+punt3.val)/2;
+
+								temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
+								temp3.y=(punt2.y+punt3.y)/2;					//   *** D   2y3
+								temp3.val=(punt2.val+punt3.val)/2;
+
+								buscaPuntos (temp2,temp3,punt3,temp1,valor,profundidad+1);
 
 
-		//						// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
-		//						temp1.x=(punt1.x+punt2.x)/2;
-		//						temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
-		//						temp1.val=(punt1.val+punt2.val)/2;
-		//
-		//						temp2.x=(punt1.x+punt2.x)/2;
-		//						temp2.y=(punt1.y+punt4.y)/2;		//  medio diagonal   ---  B
-		//						temp2.val=(punt1.val+punt3.val)/2;
-		//
-		//						temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
-		//						temp3.y=(punt1.y+punt4.y)/2; 			//  medio entre 1 y 4   --- C
-		//						temp3.val=(punt1.val+punt4.val)/2;
-		//
-		//						buscaPuntos (punt1,temp1,temp2,temp3,valor);
-		//
-		//						////  SEGUNDO CUADRADO
-		//						temp1.x=(punt1.x+punt2.x)/2;
-		//						temp1.y=punt1.y;//(punt1.y+punt2.y)/2;		// ***  A  1y2
-		//						temp1.val=(punt1.val+punt2.val)/2;
-		//
-		//						temp2.x=(punt1.x+punt2.x)/2;
-		//						temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
-		//						temp2.val=(punt1.val+punt3.val)/2;
-		//
-		//						temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
-		//						temp3.y=(punt2.y+punt3.y)/2;				// medio entre 2 y 3   --- D
-		//						temp3.val=(punt2.val+punt3.val)/2;
-		//
-		//						buscaPuntos (temp1,punt2,temp3,temp2,valor);
-		//
-		//						////  TERCER CUADRADO
-		//						temp1.x=(punt4.x+punt3.x)/2;
-		//						temp1.y=punt3.y;//(punt1.y+punt2.y)/2;    //  medio entre 3y 4  --  E
-		//						temp1.val=(punt4.val+punt3.val)/2;
-		//
-		//						temp2.x=(punt1.x+punt2.x)/2;
-		//						temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
-		//						temp2.val=(punt1.val+punt3.val)/2;
-		//
-		//						temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
-		//						temp3.y=(punt2.y+punt3.y)/2;					//   *** D   2y3
-		//						temp3.val=(punt2.val+punt3.val)/2;
-		//
-		//						buscaPuntos (temp2,temp3,punt3,temp1,valor);
-		//
-		//
-		//						/// CUARTO CUADRADO
-		//						temp1.x=(punt4.x+punt3.x)/2;
-		//						temp1.y=punt3.y;//(punt1.y+punt2.y)/2;			// E
-		//						temp1.val=(punt4.val+punt3.val)/2;
-		//
-		//						temp2.x=(punt1.x+punt2.x)/2;
-		//						temp2.y=(punt1.y+punt4.y)/2;				//  diag
-		//						temp2.val=(punt1.val+punt3.val)/2;
-		//
-		//						temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
-		//						temp3.y=(punt1.y+punt4.y)/2;					//  1y4
-		//						temp3.val=(punt1.val+punt4.val)/2;
-		//
-		//						buscaPuntos (temp3,temp2,temp1,punt4,valor);
-		//
+								/// CUARTO CUADRADO
+								temp1.x=(punt4.x+punt3.x)/2;
+								temp1.y=punt3.y;//(punt1.y+punt2.y)/2;			// E
+								temp1.val=(punt4.val+punt3.val)/2;
+
+								temp2.x=(punt1.x+punt2.x)/2;
+								temp2.y=(punt1.y+punt4.y)/2;				//  diag
+								temp2.val=(punt1.val+punt3.val)/2;
+
+								temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
+								temp3.y=(punt1.y+punt4.y)/2;					//  1y4
+								temp3.val=(punt1.val+punt4.val)/2;
+
+								buscaPuntos (temp3,temp2,temp1,punt4,valor,profundidad+1);
+
 		//						//glFlush();
+		}else{
+
+
+
+		}
+
 		break;
 	}
 	glFlush();
@@ -666,17 +683,18 @@ void PintarIsoPressio (int miintervalo){
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	//glBegin(GL_POLYGON);
-	glBegin(GL_POINTS);
-	glColor3f(1,1,0);
+
 
 	for ( m=0; m<indicpunt;m++)
 	{
+		glBegin(GL_POINTS);
+		glColor3f(1,1,0);
 		glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
 		m++;
 		glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
-
+		glEnd();
 	}
-	glEnd();
+
 
 	fprintf(stdout,"valor %f , %i puntos a pintar\n",k,indicpunt);
 	// limpio estructura de puntos pintados
