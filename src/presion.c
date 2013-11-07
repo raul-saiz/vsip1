@@ -11,17 +11,17 @@
 #include "cartografia.h"
 #include "presion.h"
 
-float geopuntos[35][25];
+float geopuntos[25][35];
 
-struct puntcont puntsini[35][25];
+struct puntcont puntsini[25][35];
 
-struct puntcont puntscontorn[19000];
+struct puntcont puntscontorn[150000];
 
 float interx;
 float intery;
 
 
-int max_profundidad = 4;
+int max_profundidad = 4 ;
 
 int indicpunt=0;
 
@@ -50,7 +50,7 @@ void llegirEuropaGeo(char* nomFitxer,int multiplicador) {
 
 	i=0;
 	fscanf(f,"%s",s); // leo el DSAA
-	fscanf(f,"%d %d",&fily,&colx); // leo filas y columnas
+	fscanf(f,"%d %d",&colx,&fily); // leo filas y columnas
 	fscanf(f,"%f %f",&punttemporalX.x,&punttemporalX.y);  // inicio del muestreo
 	fscanf(f,"%f %f",&punttemporalY.x,&punttemporalY.y);  // final del muestreo
 	fscanf(f,"%f %f",&minvalor,&maxvalor);  // valores MAX i MIN
@@ -89,7 +89,7 @@ void transferencia (float propietat){
 	}else{
 		micolor[1]=(2-((propietat-minvalor)/((maxvalor-minvalor)/2)));//
 	}
-printf("transf: %f, %f, %f : % f %f --- %f \n",micolor[0],micolor[1],micolor[2],minvalor,maxvalor ,propietat);
+//printf("transf: %f, %f, %f : % f %f --- %f \n",micolor[0],micolor[1],micolor[2],minvalor,maxvalor ,propietat);
 }
 
 void PintarGeoPressio (float multiplicador){
@@ -114,17 +114,17 @@ void PintarGeoPressio (float multiplicador){
 			glColor3f(micolor[0],micolor[1],micolor[2]);
 			glVertex3f(j*desplax,i*desplay,0.0);
 
-			transferencia(geopuntos[j+1][i]);
+			transferencia(geopuntos[j][i+1]);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f((j+1)*desplax,i*desplay,0.0);
+			glVertex3f((j)*desplax,(i+1)*desplay,0.0);
 
 			transferencia(geopuntos[j+1][i+1]);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
 			glVertex3f((j+1)*desplax,(i+1)*desplay,0.0);
 
-			transferencia(geopuntos[j][i+1]);
+			transferencia(geopuntos[j+1][i]);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f(j*desplax,(i+1)*desplay,0.0);
+			glVertex3f((j+1)*desplax,(i)*desplay,0.0);
 
 			glEnd();
 
