@@ -11,17 +11,17 @@
 #include "cartografia.h"
 #include "presion.h"
 
-float geopuntos[25][35];
+float geopuntos[35][25];
 
-struct puntcont puntsini[25][35];
+struct puntcont puntsini[35][25];
 
-struct puntcont puntscontorn[150000];
+struct puntcont puntscontorn[19000];
 
 float interx;
 float intery;
 
 
-int max_profundidad = 4 ;
+int max_profundidad = 4;
 
 int indicpunt=0;
 
@@ -35,7 +35,7 @@ int geo,geopint,isos,intervalo;
 void llegirEuropaGeo(char* nomFitxer,int multiplicador) {
 	FILE  *f;
 	int i, j;
-
+	int k=0;
 	struct puntcont puntco;
 
 	//int punts;
@@ -50,7 +50,7 @@ void llegirEuropaGeo(char* nomFitxer,int multiplicador) {
 
 	i=0;
 	fscanf(f,"%s",s); // leo el DSAA
-	fscanf(f,"%d %d",&colx,&fily); // leo filas y columnas
+	fscanf(f,"%d %d",&fily,&colx); // leo filas y columnas
 	fscanf(f,"%f %f",&punttemporalX.x,&punttemporalX.y);  // inicio del muestreo
 	fscanf(f,"%f %f",&punttemporalY.x,&punttemporalY.y);  // final del muestreo
 	fscanf(f,"%f %f",&minvalor,&maxvalor);  // valores MAX i MIN
@@ -69,12 +69,12 @@ void llegirEuropaGeo(char* nomFitxer,int multiplicador) {
 			puntco.val=geopuntos[j][i];
 
 			puntsini[i][j]=puntco;
-			//k++;
+			k++;
 		}
 	}
 
 	fclose(f);
-	//fprintf(stdout,"Leidas %d geopresiones del fichero:%s \n",k, nomFitxer);
+	fprintf(stdout,"Leidas %d geopresiones del fichero:%s \n",k, nomFitxer);
 	//maxmeridians=k;
 }
 
@@ -114,17 +114,17 @@ void PintarGeoPressio (float multiplicador){
 			glColor3f(micolor[0],micolor[1],micolor[2]);
 			glVertex3f(j*desplax,i*desplay,0.0);
 
-			transferencia(geopuntos[j][i+1]);
+			transferencia(geopuntos[j+1][i]);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f((j)*desplax,(i+1)*desplay,0.0);
+			glVertex3f((j+1)*desplax,i*desplay,0.0);
 
 			transferencia(geopuntos[j+1][i+1]);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
 			glVertex3f((j+1)*desplax,(i+1)*desplay,0.0);
 
-			transferencia(geopuntos[j+1][i]);
+			transferencia(geopuntos[j][i+1]);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f((j+1)*desplax,(i)*desplay,0.0);
+			glVertex3f(j*desplax,(i+1)*desplay,0.0);
 
 			glEnd();
 
@@ -774,36 +774,6 @@ void PintarIsoPressio (int miintervalo){
 		}
 	}
 
-	// for para pintar lo hallado en los for anteriores
-	//glPolygonMode(GL_FRONT_AND_BACK,GL_PO);
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
-
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//	glBegin(GL_POLYGON);
-	//
-	//	//eligeColor(k,intervalo);
-	//	glColor3f(1,1,k);
-	//	glVertex3f((float)puntscontorn[0].x,(float)puntscontorn[0].y,0.0);
-	//	for ( m=1; m<indicpunt;m++)
-	//	{
-	//		// COMPROBACION QUE LOS PUNTOS ESTAN SUFICIENTEMENTE CERCA
-	//		if( ( ((float)puntscontorn[m].x - (float)puntscontorn[m-1].x )> intervalo ) &&
-	//				(((float)puntscontorn[m].y - (float)puntscontorn[m-1].y )> intervalo ) && m > 1 ){
-	//			glEnd();
-	//			glBegin(GL_POLYGON);
-	//		}
-	//
-	//		// pinto lineas
-	//		glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
-	//	}
-	//	glEnd();
-
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glBegin(GL_POLYGON);
 
 
 	for ( m=0; m<indicpunt;m++)
@@ -816,25 +786,13 @@ void PintarIsoPressio (int miintervalo){
 		glEnd();
 	}
 
-//	for ( m=0; m<indicpunt;m++)
-//		{
-//			glBegin(GL_LINES);
-//			glColor3f(1,1,0);
-//			glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
-//			m++;
-//			glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
-//			glEnd();
-//		}
+	//fprintf(stdout,"valor %f , %i puntos a pintar\n",k,indicpunt);
 
-
-	fprintf(stdout,"valor %f , %i puntos a pintar\n",k,indicpunt);
-	// limpio estructura de puntos pintados
-	//glFlush();
 	indicpunt=0;
 	k += miintervalo;
 	}
 	glFlush();
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 
 }
 

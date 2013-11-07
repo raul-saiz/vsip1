@@ -87,8 +87,7 @@ void Tecles( unsigned char tecla, int x, int y) {
         		intervalo=5;
         	break;
   case 27:
-    exit(0);
-    		break;
+    exit(0);    break;
   }
   glutPostRedisplay();
 }
