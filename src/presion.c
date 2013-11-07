@@ -11,9 +11,9 @@
 #include "cartografia.h"
 #include "presion.h"
 
-float geopuntos[35][25];
+float geopuntos[25][35];
 
-struct puntcont puntsini[35][25];
+struct puntcont puntsini[25][35];
 
 struct puntcont puntscontorn[19000];
 
@@ -21,7 +21,7 @@ float interx;
 float intery;
 
 
-int max_profundidad = 4;
+int max_profundidad = 5;
 
 int indicpunt=0;
 
@@ -40,8 +40,9 @@ void llegirEuropaGeo(char* nomFitxer,int multiplicador) {
 
 	//int punts;
 	char s[4]="    ";
-
-
+fflush(stdout);
+fflush(stdin);
+//fflush();
 	f=fopen(nomFitxer,"r");
 	if (!f)    {
 		printf("no puc obrir el fitxer %s\n", nomFitxer);
@@ -50,7 +51,7 @@ void llegirEuropaGeo(char* nomFitxer,int multiplicador) {
 
 	i=0;
 	fscanf(f,"%s",s); // leo el DSAA
-	fscanf(f,"%d %d",&fily,&colx); // leo filas y columnas
+	fscanf(f,"%d %d",&colx,&fily); // leo filas y columnas
 	fscanf(f,"%f %f",&punttemporalX.x,&punttemporalX.y);  // inicio del muestreo
 	fscanf(f,"%f %f",&punttemporalY.x,&punttemporalY.y);  // final del muestreo
 	fscanf(f,"%f %f",&minvalor,&maxvalor);  // valores MAX i MIN
@@ -58,10 +59,11 @@ void llegirEuropaGeo(char* nomFitxer,int multiplicador) {
 	interx=(punttemporalX.y-punttemporalX.x)/colx*multiplicador;
 	intery=(punttemporalY.y-punttemporalY.x)/fily*multiplicador;
 
-	for (i=0; i<fily; i++) {
-		for (j=0; j<colx; j++) {
 
-			fscanf(f,"%f ",&(geopuntos[j][i]));// leo los valores de geopresion
+		for (i=0; i<fily; i++) {
+			for (j=0; j<colx; j++) {
+
+			fscanf(f,"%f",&(geopuntos[j][i]));// leo los valores de geopresion
 			//printf("%f \n",geopuntos[i][j]);
 			/// guardo estructura para pintar contornos
 			puntco.x=interx*j;
@@ -72,9 +74,12 @@ void llegirEuropaGeo(char* nomFitxer,int multiplicador) {
 			k++;
 		}
 	}
+	fflush(f);
 
 	fclose(f);
 	fprintf(stdout,"Leidas %d geopresiones del fichero:%s \n",k, nomFitxer);
+//	geopint=1;
+//	intervalo=15;
 	//maxmeridians=k;
 }
 
@@ -133,7 +138,7 @@ void PintarGeoPressio (float multiplicador){
 
 	}
 
-	glFlush();
+	//glFlush();
 }
 
 void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont punt3,struct puntcont punt4, float valor ,int profundidad ){
@@ -148,7 +153,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 	indictot=0;indic1=0;indic2=0;indic3=0;indic4=0;
 
 	//if (punt1.val >= valor-discri+intervalo && punt1.val <= valor+discri+intervalo )  //punt1.val > valor-increm && punt1.val <= valor+increm
-	if (punt1.val <= valor+discri+intervalo && punt1.val > 1)
+	if (punt1.val <= valor+discri+intervalo)// && punt1.val > 1)
 	{
 
 		indictot++;
@@ -156,19 +161,19 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 	}
 
 	//if (punt2.val >= valor-discri+intervalo && punt2.val <= valor+discri+intervalo )
-	if (punt2.val <= valor+discri+intervalo && punt2.val > 1)
+	if (punt2.val <= valor+discri+intervalo)// && punt2.val > 1)
 	{
 		indictot++;
 		indic2=1;
 	}
 	//if (punt3.val >= valor-discri+intervalo && punt3.val <= valor+discri+intervalo )
-	if (punt3.val <= valor+discri+intervalo && punt3.val > 1)
+	if (punt3.val <= valor+discri+intervalo)// && punt3.val > 1)
 	{
 		indictot++;
 		indic3=1;
 	}
 	//if (punt4.val >= valor-discri+intervalo && punt4.val <= valor+discri+intervalo )
-	if (punt4.val <= valor+discri+intervalo && punt4.val > 1)
+	if (punt4.val <= valor+discri+intervalo)// && punt4.val > 1)
 	{
 		indictot++;
 		indic4=1;
@@ -181,130 +186,130 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 	case 1: // añado el punto como si pasase por el
 		//fprintf(stdout,"caso 1\n");
 		if ( profundidad < max_profundidad){
-											// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
-											temp1.x=(punt1.x+punt2.x)/2;
-											temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
-											temp1.val=(punt1.val+punt2.val)/2;
+			// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
+			temp1.x=(punt1.x+punt2.x)/2;
+			temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
+			temp1.val=(punt1.val+punt2.val)/2;
 
-											temp2.x=(punt1.x+punt2.x)/2;
-											temp2.y=(punt1.y+punt4.y)/2;		//  medio diagonal   ---  B
-											temp2.val=(punt1.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;		//  medio diagonal   ---  B
+			temp2.val=(punt1.val+punt3.val)/2;
 
-											temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
-											temp3.y=(punt1.y+punt4.y)/2; 			//  medio entre 1 y 4   --- C
-											temp3.val=(punt1.val+punt4.val)/2;
+			temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt1.y+punt4.y)/2; 			//  medio entre 1 y 4   --- C
+			temp3.val=(punt1.val+punt4.val)/2;
 
-											buscaPuntos (punt1,temp1,temp2,temp3,valor,profundidad+1);
+			buscaPuntos (punt1,temp1,temp2,temp3,valor,profundidad+1);
 
-											////  SEGUNDO CUADRADO
-											temp1.x=(punt1.x+punt2.x)/2;
-											temp1.y=punt1.y;//(punt1.y+punt2.y)/2;		// ***  A  1y2
-											temp1.val=(punt1.val+punt2.val)/2;
+			////  SEGUNDO CUADRADO
+			temp1.x=(punt1.x+punt2.x)/2;
+			temp1.y=punt1.y;//(punt1.y+punt2.y)/2;		// ***  A  1y2
+			temp1.val=(punt1.val+punt2.val)/2;
 
-											temp2.x=(punt1.x+punt2.x)/2;
-											temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
-											temp2.val=(punt1.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
+			temp2.val=(punt1.val+punt3.val)/2;
 
-											temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
-											temp3.y=(punt2.y+punt3.y)/2;				// medio entre 2 y 3   --- D
-											temp3.val=(punt2.val+punt3.val)/2;
+			temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt2.y+punt3.y)/2;				// medio entre 2 y 3   --- D
+			temp3.val=(punt2.val+punt3.val)/2;
 
-											buscaPuntos (temp1,punt2,temp3,temp2,valor,profundidad+1);
+			buscaPuntos (temp1,punt2,temp3,temp2,valor,profundidad+1);
 
-											////  TERCER CUADRADO
-											temp1.x=(punt4.x+punt3.x)/2;
-											temp1.y=punt3.y;//(punt1.y+punt2.y)/2;    //  medio entre 3y 4  --  E
-											temp1.val=(punt4.val+punt3.val)/2;
+			////  TERCER CUADRADO
+			temp1.x=(punt4.x+punt3.x)/2;
+			temp1.y=punt3.y;//(punt1.y+punt2.y)/2;    //  medio entre 3y 4  --  E
+			temp1.val=(punt4.val+punt3.val)/2;
 
-											temp2.x=(punt1.x+punt2.x)/2;
-											temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
-											temp2.val=(punt1.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
+			temp2.val=(punt1.val+punt3.val)/2;
 
-											temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
-											temp3.y=(punt2.y+punt3.y)/2;					//   *** D   2y3
-											temp3.val=(punt2.val+punt3.val)/2;
+			temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt2.y+punt3.y)/2;					//   *** D   2y3
+			temp3.val=(punt2.val+punt3.val)/2;
 
-											buscaPuntos (temp2,temp3,punt3,temp1,valor,profundidad+1);
+			buscaPuntos (temp2,temp3,punt3,temp1,valor,profundidad+1);
 
 
-											/// CUARTO CUADRADO
-											temp1.x=(punt4.x+punt3.x)/2;
-											temp1.y=punt3.y;//(punt1.y+punt2.y)/2;			// E
-											temp1.val=(punt4.val+punt3.val)/2;
+			/// CUARTO CUADRADO
+			temp1.x=(punt4.x+punt3.x)/2;
+			temp1.y=punt3.y;//(punt1.y+punt2.y)/2;			// E
+			temp1.val=(punt4.val+punt3.val)/2;
 
-											temp2.x=(punt1.x+punt2.x)/2;
-											temp2.y=(punt1.y+punt4.y)/2;				//  diag
-											temp2.val=(punt1.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;				//  diag
+			temp2.val=(punt1.val+punt3.val)/2;
 
-											temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
-											temp3.y=(punt1.y+punt4.y)/2;					//  1y4
-											temp3.val=(punt1.val+punt4.val)/2;
+			temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt1.y+punt4.y)/2;					//  1y4
+			temp3.val=(punt1.val+punt4.val)/2;
 
-											buscaPuntos (temp3,temp2,temp1,punt4,valor,profundidad+1);
+			buscaPuntos (temp3,temp2,temp1,punt4,valor,profundidad+1);
 		}else{
 
 
-		if (indic1>0){
-			//							puntscontorn[indicpunt]=punt1;
-			//							indicpunt++;
-			temp1.x=(punt1.x+punt2.x)/2;
-			temp1.y=(punt1.y+punt2.y)/2;
-			temp1.val=(punt1.val+punt2.val)/2;
-			puntscontorn[indicpunt]=temp1;
-			indicpunt++;
-			temp1.x=(punt1.x+punt4.x)/2;
-			temp1.y=(punt1.y+punt4.y)/2;
-			temp1.val=(punt1.val+punt4.val)/2;
-			puntscontorn[indicpunt]=temp1;
-			indicpunt++;
+			if (indic1>0){
+				//							puntscontorn[indicpunt]=punt1;
+				//							indicpunt++;
+				temp1.x=(punt1.x+punt2.x)/2;
+				temp1.y=(punt1.y+punt2.y)/2;
+				temp1.val=(punt1.val+punt2.val)/2;
+				puntscontorn[indicpunt]=temp1;
+				indicpunt++;
+				temp1.x=(punt1.x+punt4.x)/2;
+				temp1.y=(punt1.y+punt4.y)/2;
+				temp1.val=(punt1.val+punt4.val)/2;
+				puntscontorn[indicpunt]=temp1;
+				indicpunt++;
 
-		}
-		//puntscontorn[indicpunt]=punt1;
-		if (indic2>0){
-			//							puntscontorn[indicpunt]=punt2;
-			//							indicpunt++;
-			temp1.x=(punt1.x+punt2.x)/2;
-			temp1.y=(punt1.y+punt2.y)/2;
-			temp1.val=(punt1.val+punt2.val)/2;
-			puntscontorn[indicpunt]=temp1;
-			indicpunt++;
-			temp1.x=(punt3.x+punt2.x)/2;
-			temp1.y=(punt3.y+punt2.y)/2;
-			temp1.val=(punt3.val+punt2.val)/2;
-			puntscontorn[indicpunt]=temp1;
-			indicpunt++;
+			}
+			//puntscontorn[indicpunt]=punt1;
+			if (indic2>0){
+				//							puntscontorn[indicpunt]=punt2;
+				//							indicpunt++;
+				temp1.x=(punt1.x+punt2.x)/2;
+				temp1.y=(punt1.y+punt2.y)/2;
+				temp1.val=(punt1.val+punt2.val)/2;
+				puntscontorn[indicpunt]=temp1;
+				indicpunt++;
+				temp1.x=(punt3.x+punt2.x)/2;
+				temp1.y=(punt3.y+punt2.y)/2;
+				temp1.val=(punt3.val+punt2.val)/2;
+				puntscontorn[indicpunt]=temp1;
+				indicpunt++;
 
-		}
-		if (indic3>0){
-			//							puntscontorn[indicpunt]=punt3;
-			//							indicpunt++;
-			temp1.x=(punt3.x+punt2.x)/2;
-			temp1.y=(punt3.y+punt2.y)/2;
-			temp1.val=(punt3.val+punt2.val)/2;
-			puntscontorn[indicpunt]=temp1;
-			indicpunt++;
-			temp1.x=(punt3.x+punt4.x)/2;
-			temp1.y=(punt3.y+punt4.y)/2;
-			temp1.val=(punt3.val+punt4.val)/2;
-			puntscontorn[indicpunt]=temp1;
-			indicpunt++;
+			}
+			if (indic3>0){
+				//							puntscontorn[indicpunt]=punt3;
+				//							indicpunt++;
+				temp1.x=(punt3.x+punt2.x)/2;
+				temp1.y=(punt3.y+punt2.y)/2;
+				temp1.val=(punt3.val+punt2.val)/2;
+				puntscontorn[indicpunt]=temp1;
+				indicpunt++;
+				temp1.x=(punt3.x+punt4.x)/2;
+				temp1.y=(punt3.y+punt4.y)/2;
+				temp1.val=(punt3.val+punt4.val)/2;
+				puntscontorn[indicpunt]=temp1;
+				indicpunt++;
 
-		}
-		if (indic4>0){
-			//							puntscontorn[indicpunt]=punt4;
-			//							indicpunt++;
-			temp1.x=(punt3.x+punt4.x)/2;
-			temp1.y=(punt3.y+punt4.y)/2;
-			temp1.val=(punt3.val+punt4.val)/2;
-			puntscontorn[indicpunt]=temp1;
-			indicpunt++;
-			temp1.x=(punt1.x+punt4.x)/2;
-			temp1.y=(punt1.y+punt4.y)/2;
-			temp1.val=(punt1.val+punt4.val)/2;
-			puntscontorn[indicpunt]=temp1;
-			indicpunt++;
+			}
+			if (indic4>0){
+				//							puntscontorn[indicpunt]=punt4;
+				//							indicpunt++;
+				temp1.x=(punt3.x+punt4.x)/2;
+				temp1.y=(punt3.y+punt4.y)/2;
+				temp1.val=(punt3.val+punt4.val)/2;
+				puntscontorn[indicpunt]=temp1;
+				indicpunt++;
+				temp1.x=(punt1.x+punt4.x)/2;
+				temp1.y=(punt1.y+punt4.y)/2;
+				temp1.val=(punt1.val+punt4.val)/2;
+				puntscontorn[indicpunt]=temp1;
+				indicpunt++;
 
-		}
+			}
 		}
 		break;
 	case 2: // añado el  punto medio
@@ -312,136 +317,72 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 
 
 		if ( profundidad < max_profundidad){
-//			// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
-//			temp1.x=(punt1.x+punt2.x)/2;
-//			temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
-//			temp1.val=(punt1.val+punt2.val)/2;
-//
-//			temp2.x=(punt1.x+punt2.x)/2;
-//			temp2.y=(punt1.y+punt4.y)/2;		//  medio diagonal   ---  B
-//			temp2.val=(punt1.val+punt3.val)/2;
-//
-//			temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
-//			temp3.y=(punt1.y+punt4.y)/2; 			//  medio entre 1 y 4   --- C
-//			temp3.val=(punt1.val+punt4.val)/2;
-//
-//			buscaPuntos (punt1,temp1,temp2,temp3,valor,profundidad+1);
-//
-//			////  SEGUNDO CUADRADO
-//			temp1.x=(punt1.x+punt2.x)/2;
-//			temp1.y=punt1.y;//(punt1.y+punt2.y)/2;		// ***  A  1y2
-//			temp1.val=(punt1.val+punt2.val)/2;
-//
-//			temp2.x=(punt1.x+punt2.x)/2;
-//			temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
-//			temp2.val=(punt1.val+punt3.val)/2;
-//
-//			temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
-//			temp3.y=(punt2.y+punt3.y)/2;				// medio entre 2 y 3   --- D
-//			temp3.val=(punt2.val+punt3.val)/2;
-//
-//			buscaPuntos (temp1,punt2,temp3,temp2,valor,profundidad+1);
-//
-//			/// CUARTO CUADRADO
-//			temp1.x=(punt4.x+punt3.x)/2;
-//			temp1.y=punt3.y;//(punt1.y+punt2.y)/2;			// E
-//			temp1.val=(punt4.val+punt3.val)/2;
-//
-//			temp2.x=(punt1.x+punt2.x)/2;
-//			temp2.y=(punt1.y+punt4.y)/2;				//  diag
-//			temp2.val=(punt1.val+punt3.val)/2;
-//
-//			temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
-//			temp3.y=(punt1.y+punt4.y)/2;					//  1y4
-//			temp3.val=(punt1.val+punt4.val)/2;
-//
-//			buscaPuntos (temp3,temp2,temp1,punt4,valor,profundidad+1);
-//
-//			////  TERCER CUADRADO
-//			temp1.x=(punt4.x+punt3.x)/2;
-//			temp1.y=punt3.y;//(punt1.y+punt2.y)/2;    //  medio entre 3y 4  --  E
-//			temp1.val=(punt4.val+punt3.val)/2;
-//
-//			temp2.x=(punt1.x+punt2.x)/2;
-//			temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
-//			temp2.val=(punt1.val+punt3.val)/2;
-//
-//			temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
-//			temp3.y=(punt2.y+punt3.y)/2;					//   *** D   2y3
-//			temp3.val=(punt2.val+punt3.val)/2;
-//
-//			buscaPuntos (temp2,temp3,punt3,temp1,valor,profundidad+1);
-//
-//
-											// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
-											temp1.x=(punt1.x+punt2.x)/2;
-											temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
-											temp1.val=(punt1.val+punt2.val)/2;
 
-											temp2.x=(punt1.x+punt2.x)/2;
-											temp2.y=(punt1.y+punt4.y)/2;		//  medio diagonal   ---  B
-											temp2.val=(punt1.val+punt3.val)/2;
+			// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
+			temp1.x=(punt1.x+punt2.x)/2;
+			temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
+			temp1.val=(punt1.val+punt2.val)/2;
 
-											temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
-											temp3.y=(punt1.y+punt4.y)/2; 			//  medio entre 1 y 4   --- C
-											temp3.val=(punt1.val+punt4.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;		//  medio diagonal   ---  B
+			temp2.val=(punt1.val+punt3.val)/2;
 
-											buscaPuntos (punt1,temp1,temp2,temp3,valor,profundidad+1);
+			temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt1.y+punt4.y)/2; 			//  medio entre 1 y 4   --- C
+			temp3.val=(punt1.val+punt4.val)/2;
 
-											////  SEGUNDO CUADRADO
-											temp1.x=(punt1.x+punt2.x)/2;
-											temp1.y=punt1.y;//(punt1.y+punt2.y)/2;		// ***  A  1y2
-											temp1.val=(punt1.val+punt2.val)/2;
+			buscaPuntos (punt1,temp1,temp2,temp3,valor,profundidad+1);
 
-											temp2.x=(punt1.x+punt2.x)/2;
-											temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
-											temp2.val=(punt1.val+punt3.val)/2;
+			////  SEGUNDO CUADRADO
+			temp1.x=(punt1.x+punt2.x)/2;
+			temp1.y=punt1.y;//(punt1.y+punt2.y)/2;		// ***  A  1y2
+			temp1.val=(punt1.val+punt2.val)/2;
 
-											temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
-											temp3.y=(punt2.y+punt3.y)/2;				// medio entre 2 y 3   --- D
-											temp3.val=(punt2.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
+			temp2.val=(punt1.val+punt3.val)/2;
 
-											buscaPuntos (temp1,punt2,temp3,temp2,valor,profundidad+1);
+			temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt2.y+punt3.y)/2;				// medio entre 2 y 3   --- D
+			temp3.val=(punt2.val+punt3.val)/2;
 
-											////  TERCER CUADRADO
-											temp1.x=(punt4.x+punt3.x)/2;
-											temp1.y=punt3.y;//(punt1.y+punt2.y)/2;    //  medio entre 3y 4  --  E
-											temp1.val=(punt4.val+punt3.val)/2;
+			buscaPuntos (temp1,punt2,temp3,temp2,valor,profundidad+1);
 
-											temp2.x=(punt1.x+punt2.x)/2;
-											temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
-											temp2.val=(punt1.val+punt3.val)/2;
+			////  TERCER CUADRADO
+			temp1.x=(punt4.x+punt3.x)/2;
+			temp1.y=punt3.y;//(punt1.y+punt2.y)/2;    //  medio entre 3y 4  --  E
+			temp1.val=(punt4.val+punt3.val)/2;
 
-											temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
-											temp3.y=(punt2.y+punt3.y)/2;					//   *** D   2y3
-											temp3.val=(punt2.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
+			temp2.val=(punt1.val+punt3.val)/2;
 
-											buscaPuntos (temp2,temp3,punt3,temp1,valor,profundidad+1);
+			temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt2.y+punt3.y)/2;					//   *** D   2y3
+			temp3.val=(punt2.val+punt3.val)/2;
+
+			buscaPuntos (temp2,temp3,punt3,temp1,valor,profundidad+1);
 
 
-											/// CUARTO CUADRADO
-											temp1.x=(punt4.x+punt3.x)/2;
-											temp1.y=punt3.y;//(punt1.y+punt2.y)/2;			// E
-											temp1.val=(punt4.val+punt3.val)/2;
+			/// CUARTO CUADRADO
+			temp1.x=(punt4.x+punt3.x)/2;
+			temp1.y=punt3.y;//(punt1.y+punt2.y)/2;			// E
+			temp1.val=(punt4.val+punt3.val)/2;
 
-											temp2.x=(punt1.x+punt2.x)/2;
-											temp2.y=(punt1.y+punt4.y)/2;				//  diag
-											temp2.val=(punt1.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;				//  diag
+			temp2.val=(punt1.val+punt3.val)/2;
 
-											temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
-											temp3.y=(punt1.y+punt4.y)/2;					//  1y4
-											temp3.val=(punt1.val+punt4.val)/2;
+			temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt1.y+punt4.y)/2;					//  1y4
+			temp3.val=(punt1.val+punt4.val)/2;
 
-											buscaPuntos (temp3,temp2,temp1,punt4,valor,profundidad+1);
+			buscaPuntos (temp3,temp2,temp1,punt4,valor,profundidad+1);
 		}else{
 			//creo el punto medio temporal
 
 			if (indic1 && indic2){
-				//							temp1.x=(punt1.x+punt2.x)/2;
-				//							temp1.y=(punt1.y+punt2.y)/2;
-				//							temp1.val=(punt1.val+punt2.val)/2;
-				//							puntscontorn[indicpunt]=temp1;
-				//							indicpunt++;
+
 				// punto medio del lado
 				temp1.x=(punt1.x+punt4.x)/2;
 				temp1.y=(punt1.y+punt4.y)/2;
@@ -457,11 +398,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 			}
 
 			if (indic2 && indic3){
-				//							temp1.x=(punt3.x+punt2.x)/2;
-				//							temp1.y=(punt3.y+punt2.y)/2;
-				//							temp1.val=(punt3.val+punt2.val)/2;
-				//							puntscontorn[indicpunt]=temp1;
-				//							indicpunt++;
+
 				// punto medio del lado
 				temp1.x=(punt1.x+punt2.x)/2;
 				temp1.y=(punt1.y+punt2.y)/2;
@@ -477,11 +414,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 			}// punto medio del lado
 
 			if (indic3 && indic4){
-				//							temp1.x=(punt3.x+punt4.x)/2;
-				//							temp1.y=(punt3.y+punt4.y)/2;
-				//							temp1.val=(punt3.val+punt4.val)/2;
-				//							puntscontorn[indicpunt]=temp1;
-				//							indicpunt++;
+
 				// punto medio del lado
 
 				temp1.x=(punt3.x+punt2.x)/2;
@@ -497,11 +430,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 			}// punto medio del lado
 
 			if (indic1 && indic4){
-				//							temp1.x=(punt1.x+punt4.x)/2;
-				//							temp1.y=(punt1.y+punt4.y)/2;
-				//							temp1.val=(punt1.val+punt4.val)/2;
-				//							puntscontorn[indicpunt]=temp1;
-				//							indicpunt++;
+
 				// punto medio del lado
 				temp1.x=(punt1.x+punt2.x)/2;
 				temp1.y=(punt1.y+punt2.y)/2;
@@ -517,39 +446,30 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 			}// punto medio del lado
 
 			if (indic1 && indic3){
-				//						temp1.x=(punt1.x+punt3.x)/2;
-				//						temp1.y=(punt1.y+punt3.y)/2;
-				//						temp1.val=(punt1.val+punt3.val)/2;
-				//						puntscontorn[indicpunt]=temp1;
-				//						indicpunt++;
+
 				// punto medio del lado
 				puntscontorn[indicpunt]=punt1;
-								indicpunt++;
+				indicpunt++;
 				puntscontorn[indicpunt]=punt1;
 				indicpunt++;
 				puntscontorn[indicpunt]=punt3;
 				indicpunt++;
 				puntscontorn[indicpunt]=punt3;
-								indicpunt++;
+				indicpunt++;
 
 			} // miro diagonal, punto medio
 
 			if (indic2 && indic4){
-				//						temp1.x=(punt4.x+punt2.x)/2;
-				//						temp1.y=(punt4.y+punt2.y)/2;
-				//						temp1.val=(punt4.val+punt2.val)/2;
-				//						puntscontorn[indicpunt]=temp1;
-				//						indicpunt++;
 				// punto medio del lado
 
 				puntscontorn[indicpunt]=punt2;
 				indicpunt++;
 				puntscontorn[indicpunt]=punt2;
-								indicpunt++;
+				indicpunt++;
 				puntscontorn[indicpunt]=punt4;
 				indicpunt++;
 				puntscontorn[indicpunt]=punt4;
-								indicpunt++;
+				indicpunt++;
 			} // miro diagonal, punto medio
 
 		}
@@ -638,7 +558,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 			}
 
 			if (indic4 && indic2 && indic3) // punto medio del lado
-					{
+			{
 				temp1.x=(punt3.x+punt2.x)/2;
 				temp1.y=(punt3.y+punt2.y)/2;
 				temp1.val=(punt3.val+punt2.val)/2;
@@ -649,7 +569,7 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 				temp1.val=(punt3.val+punt4.val)/2;
 				puntscontorn[indicpunt]=temp1;
 				indicpunt++;
-					}
+			}
 			if (indic1 && indic4 && indic3) // punto medio del lado
 			{
 				temp1.x=(punt3.x+punt4.x)/2;
@@ -683,69 +603,69 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 	case 4:  // subdivido en 4 partes y vulevo a relizar este case
 		//fprintf(stdout,"caso 4\n");
 		if ( profundidad < max_profundidad){
-//
-								// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
-								temp1.x=(punt1.x+punt2.x)/2;
-								temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
-								temp1.val=(punt1.val+punt2.val)/2;
+			//
+			// SENTIDO ANTIHORARIO , EMPIEZO DEL (0,0)
+			temp1.x=(punt1.x+punt2.x)/2;
+			temp1.y=punt1.y;//(punt1.y+punt2.y)/2;    // medio entre 1 y 2    --- A
+			temp1.val=(punt1.val+punt2.val)/2;
 
-								temp2.x=(punt1.x+punt2.x)/2;
-								temp2.y=(punt1.y+punt4.y)/2;		//  medio diagonal   ---  B
-								temp2.val=(punt1.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;		//  medio diagonal   ---  B
+			temp2.val=(punt1.val+punt3.val)/2;
 
-								temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
-								temp3.y=(punt1.y+punt4.y)/2; 			//  medio entre 1 y 4   --- C
-								temp3.val=(punt1.val+punt4.val)/2;
+			temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt1.y+punt4.y)/2; 			//  medio entre 1 y 4   --- C
+			temp3.val=(punt1.val+punt4.val)/2;
 
-								buscaPuntos (punt1,temp1,temp2,temp3,valor,profundidad+1);
+			buscaPuntos (punt1,temp1,temp2,temp3,valor,profundidad+1);
 
-								////  SEGUNDO CUADRADO
-								temp1.x=(punt1.x+punt2.x)/2;
-								temp1.y=punt1.y;//(punt1.y+punt2.y)/2;		// ***  A  1y2
-								temp1.val=(punt1.val+punt2.val)/2;
+			////  SEGUNDO CUADRADO
+			temp1.x=(punt1.x+punt2.x)/2;
+			temp1.y=punt1.y;//(punt1.y+punt2.y)/2;		// ***  A  1y2
+			temp1.val=(punt1.val+punt2.val)/2;
 
-								temp2.x=(punt1.x+punt2.x)/2;
-								temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
-								temp2.val=(punt1.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
+			temp2.val=(punt1.val+punt3.val)/2;
 
-								temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
-								temp3.y=(punt2.y+punt3.y)/2;				// medio entre 2 y 3   --- D
-								temp3.val=(punt2.val+punt3.val)/2;
+			temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt2.y+punt3.y)/2;				// medio entre 2 y 3   --- D
+			temp3.val=(punt2.val+punt3.val)/2;
 
-								buscaPuntos (temp1,punt2,temp3,temp2,valor,profundidad+1);
+			buscaPuntos (temp1,punt2,temp3,temp2,valor,profundidad+1);
 
-								////  TERCER CUADRADO
-								temp1.x=(punt4.x+punt3.x)/2;
-								temp1.y=punt3.y;//(punt1.y+punt2.y)/2;    //  medio entre 3y 4  --  E
-								temp1.val=(punt4.val+punt3.val)/2;
+			////  TERCER CUADRADO
+			temp1.x=(punt4.x+punt3.x)/2;
+			temp1.y=punt3.y;//(punt1.y+punt2.y)/2;    //  medio entre 3y 4  --  E
+			temp1.val=(punt4.val+punt3.val)/2;
 
-								temp2.x=(punt1.x+punt2.x)/2;
-								temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
-								temp2.val=(punt1.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;				//  *** B  diag
+			temp2.val=(punt1.val+punt3.val)/2;
 
-								temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
-								temp3.y=(punt2.y+punt3.y)/2;					//   *** D   2y3
-								temp3.val=(punt2.val+punt3.val)/2;
+			temp3.x=punt2.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt2.y+punt3.y)/2;					//   *** D   2y3
+			temp3.val=(punt2.val+punt3.val)/2;
 
-								buscaPuntos (temp2,temp3,punt3,temp1,valor,profundidad+1);
+			buscaPuntos (temp2,temp3,punt3,temp1,valor,profundidad+1);
 
 
-								/// CUARTO CUADRADO
-								temp1.x=(punt4.x+punt3.x)/2;
-								temp1.y=punt3.y;//(punt1.y+punt2.y)/2;			// E
-								temp1.val=(punt4.val+punt3.val)/2;
+			/// CUARTO CUADRADO
+			temp1.x=(punt4.x+punt3.x)/2;
+			temp1.y=punt3.y;//(punt1.y+punt2.y)/2;			// E
+			temp1.val=(punt4.val+punt3.val)/2;
 
-								temp2.x=(punt1.x+punt2.x)/2;
-								temp2.y=(punt1.y+punt4.y)/2;				//  diag
-								temp2.val=(punt1.val+punt3.val)/2;
+			temp2.x=(punt1.x+punt2.x)/2;
+			temp2.y=(punt1.y+punt4.y)/2;				//  diag
+			temp2.val=(punt1.val+punt3.val)/2;
 
-								temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
-								temp3.y=(punt1.y+punt4.y)/2;					//  1y4
-								temp3.val=(punt1.val+punt4.val)/2;
+			temp3.x=punt1.x;//(punt1.x+punt2.x)/2;
+			temp3.y=(punt1.y+punt4.y)/2;					//  1y4
+			temp3.val=(punt1.val+punt4.val)/2;
 
-								buscaPuntos (temp3,temp2,temp1,punt4,valor,profundidad+1);
+			buscaPuntos (temp3,temp2,temp1,punt4,valor,profundidad+1);
 
-		//						//glFlush();
+			//						//glFlush();
 		}else{
 
 
@@ -754,44 +674,43 @@ void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont pu
 
 		break;
 	}
-	glFlush();
+	//glFlush();
 }
 
-void PintarIsoPressio (int miintervalo){
+void PintarIsobaras (int miintervalo){
 
 	int i=0,j=0,m=0;
 	float k;
 	// definir las presiones que hay que buscar para hacer un for de ellas en los valores
 	// para cada valor recorrer las estructuras pintando al final
 	k=minvalor;
-	// for ( diferentes valores a buscar )     ENGLOBA LOS DOS FORS , BUSQUEDA Y PINTAR.
+
 	while (k<=maxvalor){
 
-	for ( i=0;i<fily-1;i++){
-		for ( j=0;j<colx-1;j++){
-			buscaPuntos (puntsini[i][j],puntsini[i][j+1],puntsini[i+1][j+1],puntsini[i+1][j],k,0);
-
+		for ( i=0;i<fily-1;i++){
+			for ( j=0;j<colx-1;j++){
+				buscaPuntos (puntsini[i][j],puntsini[i][j+1],puntsini[i+1][j+1],puntsini[i+1][j],k,0);
+			}
 		}
+
+
+
+		for ( m=0; m<indicpunt;m++)
+		{
+			glBegin(GL_LINES);
+			glColor3f(1,1,1);
+			glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
+			m++;
+			glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
+			glEnd();
+		}
+
+		//fprintf(stdout,"valor %f , %i puntos a pintar\n",k,indicpunt);
+
+		indicpunt=0;
+		k += miintervalo;
 	}
-
-
-
-	for ( m=0; m<indicpunt;m++)
-	{
-		glBegin(GL_LINES);
-		glColor3f(1,1,1);
-		glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
-		m++;
-		glVertex3f((float)puntscontorn[m].x,(float)puntscontorn[m].y,0.0);
-		glEnd();
-	}
-
-	//fprintf(stdout,"valor %f , %i puntos a pintar\n",k,indicpunt);
-
-	indicpunt=0;
-	k += miintervalo;
-	}
-	glFlush();
+	//	glFlush();
 
 
 }
@@ -801,8 +720,8 @@ void PintarPressio(){
 	if (geopint==1)
 		PintarGeoPressio(10);
 	if (isos==1)
-		PintarIsoPressio(intervalo);
+		PintarIsobaras(intervalo);
 
-	glFlush();
+	//glFlush();
 
 }

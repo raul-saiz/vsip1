@@ -23,7 +23,8 @@ void Init() {
   glClearColor(0.0, 0.0, 0.0, 0.0);
   mode = GL_FALSE;
   meri=carto=para=geopint=punt=1;
-  geo=isos=1;
+  geo=0;
+  isos=1;
   intervalo=15;
 }
 
@@ -105,6 +106,7 @@ void Pintar(){
 
 	glClear(GL_COLOR_BUFFER_BIT);
 
+
 	PintarPressio();
 	PintarCartografia();
 
@@ -122,7 +124,7 @@ int main(int argc, char *argv[]) {
   llegirEuropaMeridia("./data/euro_meridians.dat");
   llegirEuropaPuntets("./data/euro_puntets.dat");
 
-  llegirEuropaGeo("./data/geo00.grd",10);
+  llegirEuropaGeo("./data/geo36.grd",10);
 
   glutInit(&argc, argv);
   doubleBuffer=GL_FALSE;
