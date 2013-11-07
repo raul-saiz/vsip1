@@ -21,7 +21,7 @@ float interx;
 float intery;
 
 
-int max_profundidad = 5;
+int max_profundidad = 6;
 
 int indicpunt=0;
 
@@ -40,8 +40,8 @@ void llegirEuropaGeo(char* nomFitxer,int multiplicador) {
 
 	//int punts;
 	char s[4]="    ";
-fflush(stdout);
-fflush(stdin);
+//fflush(stdout);
+//fflush(stdin);
 //fflush();
 	f=fopen(nomFitxer,"r");
 	if (!f)    {
@@ -63,18 +63,18 @@ fflush(stdin);
 		for (i=0; i<fily; i++) {
 			for (j=0; j<colx; j++) {
 
-			fscanf(f,"%f",&(geopuntos[j][i]));// leo los valores de geopresion
+			fscanf(f,"%f",&(geopuntos[i][j]));// leo los valores de geopresion
 			//printf("%f \n",geopuntos[i][j]);
 			/// guardo estructura para pintar contornos
 			puntco.x=interx*j;
 			puntco.y=intery*i;
-			puntco.val=geopuntos[j][i];
+			puntco.val=geopuntos[i][j];
 
 			puntsini[i][j]=puntco;
 			k++;
 		}
 	}
-	fflush(f);
+	//fflush(f);
 
 	fclose(f);
 	fprintf(stdout,"Leidas %d geopresiones del fichero:%s \n",k, nomFitxer);
@@ -102,34 +102,42 @@ void PintarGeoPressio (float multiplicador){
 	// calculo el desplazamiento de cada valor * fila * col
 	// FimaX/maxX incremento
 
-	float desplax,desplay;
+	//float desplax,desplay;
+	//geopint=1;
 
-	desplax=((punttemporalX.y-punttemporalX.x)/colx)*multiplicador;
-	desplay=((punttemporalY.y-punttemporalY.x)/fily)*multiplicador;
+//	desplax=((punttemporalX.y-punttemporalX.x)/colx)*multiplicador;
+//	desplay=((punttemporalY.y-punttemporalY.x)/fily)*multiplicador;
 	fprintf(stdout,"intervalo isobaras : %i\n",intervalo);
 	int i=0,j=0;
-	for ( i=0;i<fily;i++){
-		for ( j=0;j<colx;j++){
+
+		for ( i=0;i<fily-1;i++){
+			for ( j=0;j<colx-1;j++){
 
 			//fprintf(stdout,"%.2f -- %.2f %.2f %.2f | ",geopuntos[i][j],micolor[0],micolor[1],micolor[2]);
 
 			glBegin(GL_POLYGON);
 
-			transferencia(geopuntos[j][i]);
+			transferencia(puntsini[i][j].val);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f(j*desplax,i*desplay,0.0);
+			glVertex3f(puntsini[i][j].x,puntsini[i][j].y,0.0);
 
-			transferencia(geopuntos[j+1][i]);
+			transferencia(puntsini[i+1][j].val);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f((j+1)*desplax,i*desplay,0.0);
+			glVertex3f(puntsini[i+1][j].x,puntsini[i+1][j].y,0.0);
 
-			transferencia(geopuntos[j+1][i+1]);
-			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f((j+1)*desplax,(i+1)*desplay,0.0);
 
-			transferencia(geopuntos[j][i+1]);
+			transferencia(puntsini[i+1][j+1].val);
 			glColor3f(micolor[0],micolor[1],micolor[2]);
-			glVertex3f(j*desplax,(i+1)*desplay,0.0);
+			glVertex3f(puntsini[i+1][j+1].x,puntsini[i+1][j+1].y,0.0);
+
+			transferencia(puntsini[i][j+1].val);
+			glColor3f(micolor[0],micolor[1],micolor[2]);
+			glVertex3f(puntsini[i][j+1].x,puntsini[i][j+1].y,0.0);
+
+
+
+
+
 
 			glEnd();
 
@@ -138,7 +146,7 @@ void PintarGeoPressio (float multiplicador){
 
 	}
 
-	//glFlush();
+	glFlush();
 }
 
 void buscaPuntos (struct puntcont punt1,struct puntcont punt2,struct puntcont punt3,struct puntcont punt4, float valor ,int profundidad ){

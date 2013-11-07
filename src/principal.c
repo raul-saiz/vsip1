@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
   llegirEuropaMeridia("./data/euro_meridians.dat");
   llegirEuropaPuntets("./data/euro_puntets.dat");
 
-  llegirEuropaGeo("./data/geo36.grd",10);
+  llegirEuropaGeo("./data/geo30.grd",10);
 
   glutInit(&argc, argv);
   doubleBuffer=GL_FALSE;
